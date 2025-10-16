@@ -1,0 +1,123 @@
+body {
+    background-color: #f4f4f4;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+h1{
+    /* border: 3px solid red;
+    border-radius: 10px; */
+    padding: 24px; /* add space between text and border */
+    margin: 24px auto; /* vertical spacing from other content and center horizontally */
+    background-color: rgb(227, 227, 227);
+}
+/* Tabs + content panel styling (active tab looks attached to panel) */
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 auto;
+    padding-top: 8px;
+}
+.tab_button {
+    padding: 10px 22px;
+    border: 1px solid transparent;
+    background: transparent;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: #222;
+}
+.tab_button:not(.active):hover {
+    background: rgba(0,0,0,0.04);
+}
+.tab_button.active {
+    background: white;
+    color: #111;
+    border: 1px solid #ddd;
+    border-bottom: 1px solid white; /* hide border between tab and panel */
+    box-shadow: 0 -1px 0 rgba(0,0,0,0.02) inset;
+    position: relative;
+    z-index: 2;
+}
+
+/* content panel directly below tabs */
+.tabs + .tab_content { display: flex; justify-content: center; }
+.tab_content > .projects_section,
+.tab_content > .members_section {
+    width: 94%;
+    max-width: 1200px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 22px 28px;
+    margin-top: -1px; /* collapse border with active tab */
+    box-shadow: none;
+}
+
+.projects_section { display: block; }
+.project_card {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.dev_container{
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 24px auto; /* vertical spacing from other content and center horizontally */
+    background-color: white;
+    border: 3px solid red;
+    border-radius: 10px;
+    align-items: center;
+    flex-direction: column;
+}
+.dev_container img{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 16px;
+    object-fit: cover;
+}
+.dev_container p{
+    font-size: 18px;
+}
+
+/* Preview and details layout for hover reveal */
+.dev_preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.dev_name { margin: 0 0 8px 0; }
+
+.dev_details {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 16px;
+    max-height: 0; /* hidden by default */
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: max-height 300ms ease, opacity 300ms ease, transform 300ms ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dev_container:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    transform: translateY(-4px);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.dev_container:hover .dev_details {
+    max-height: 200px; /* large enough to reveal content */
+    opacity: 1;
+    transform: translateY(0);
+    
+}
+
+/* small polish */
+.dev_role { margin: 8px 0 16px 0; font-size: 16px; color: #333; }
