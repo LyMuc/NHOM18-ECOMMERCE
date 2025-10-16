@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -22,6 +23,7 @@ function App() {
           count is {count}
         </button>
         <button>Count is also {count}</button>
+        <button onClick={() => window.location.href = "./login.html"}>Đăng nhập</button>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
