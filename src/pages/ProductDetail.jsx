@@ -238,7 +238,7 @@ const ProductDetail = () => {
 
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 mt-12">
+            <div className="max-w-7xl mx-auto px-4 mt-12 border border-gray-200 rounded-lg">
                 {/* Tab Headers*/}
                 <div className="flex border-b border-gray-200">
                     <button onClick={() => setActiveTab("description")} className={`px-6 py-3 font-semibold transition-colors relative ${activeTab === "description" ? "text-red-500" : "text-gray-600 hover:text-gray-900"}`}>
@@ -249,7 +249,7 @@ const ProductDetail = () => {
                     </button>
 
                     <button onClick={() => setActiveTab("details")} className={`px-6 py-3 font-semibold transition-colors relative ${activeTab === "details" ? "text-red-500" : "text-gray-600 hover:text-gray-900"}`}>
-                        Description
+                        Product Details
                         {
                             activeTab === "details" && (<div className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-500"></div>)
                         }
