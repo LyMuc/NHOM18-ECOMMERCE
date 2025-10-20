@@ -1,0 +1,90 @@
+/* Sign up page styles, reusing login palette */
+body {
+  background-color: #f8f9fa;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.signup-page { padding: 16px 0 48px; }
+
+.signup-header { 
+  width: 100%;
+  background-color: #d6d6d6;
+  border-bottom: 1px solid #e5e7eb; /* subtle bottom border */
+  margin: 0 0 16px;
+}
+
+.signup-header >h1{
+    padding: 24px; /* add space between text and border */
+    margin: 0 auto; /* center horizontally */
+}
+.signup-header__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 16px;
+}
+.signup-header h1 { margin: 8px 0 0; font-size: 24px; font-weight: 700; }
+.breadcrumbs { color: #666; font-size: 12px; }
+
+.signup-container { display: flex; justify-content: center; }
+.signup-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  max-width: 760px;
+  width: 100%;
+  padding: 24px;
+}
+
+.signup-topnote { color: #666; font-size: 14px; margin-bottom: 16px; }
+.signup-topnote a { color: #111; font-weight: 600; text-decoration: none; }
+
+.signup-form { display: flex; flex-direction: column; gap: 16px; }
+.form-row { display: grid; grid-template-columns: 160px 1fr; align-items: start; gap: 16px; }
+.form-row.checkbox { grid-template-columns: 1fr; }
+.form-row label { color: #111; font-weight: 600; }
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.input-with-hint small { color: #666; display: block; margin-top: 6px; font-size: 12px; }
+
+.password-wrapper { position: relative; display: flex; align-items: center; }
+.password-wrapper input { width: 100%; }
+.show-btn {
+  position: absolute;
+  right: 1px; top: 1px; bottom: 1px;
+  background: #000; color: #fff; border: none; border-radius: 0 4px 4px 0;
+  padding: 0 14px; font-weight: 700; cursor: pointer;
+}
+
+.input-optional { position: relative; }
+.input-optional small { display: block; color: #666; margin-top: 6px; font-size: 12px; }
+.optional-tag { position: absolute; right: -64px; top: 8px; color: #666; font-size: 12px; }
+
+.radio-group { display: flex; gap: 16px; }
+.radio-group label { font-weight: 500; }
+
+.privacy-note { color: #666; font-size: 12px; line-height: 1.5; margin: 6px 0 0 0; }
+
+.form-actions { display: flex; justify-content: flex-end; margin-top: 8px; }
+.save-btn {
+  background: #ef4444; /* same as .signin-btn */
+  color: #fff; border: none; border-radius: 4px;
+  padding: 12px 22px; font-weight: 700; cursor: pointer; font-size: 14px;
+}
+.save-btn:hover { background: #dc2626; }
+
+@media (max-width: 640px) {
+  .form-row { grid-template-columns: 1fr; }
+  .optional-tag { position: static; margin-left: 0; display: inline-block; }
+  .signup-card { padding: 16px; }
+}
+
+/* Remove old header padding block; handled by __inner */
