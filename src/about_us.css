@@ -8,6 +8,8 @@ h1{
     padding: 24px; /* add space between text and border */
     margin: 24px auto; /* vertical spacing from other content and center horizontally */
     background-color: rgb(227, 227, 227);
+    font-weight: bold;
+    font-size: 36px;
 }
 /* Tabs + content panel styling (active tab looks attached to panel) */
 .tabs {
@@ -61,6 +63,7 @@ h1{
     padding: 0;
     margin: 0;
 }
+
 .dev_container{
     width: 250px;
     display: flex;

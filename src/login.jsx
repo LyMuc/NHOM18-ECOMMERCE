@@ -11,18 +11,18 @@ const Login = () => {
           <input type="email" />
         </div>
         <div className="input-group">
-          <label>Mật khẩu</label>
+          <label>Password</label>
           <div className="password-wrapper">
             <input type="password" />
-            <button className="show-btn">Hiện</button>
+            <button className="show-btn">SHOW</button>
           </div>
         </div>
         <a href="#" className="forgot-password">
-          Quên mật khẩu?
+          Forgot your password?
         </a>
-        <button className="signin-btn">Đăng nhập</button>
+        <button className="signin-btn">SIGN IN</button>
         <div className="signup-link">
-          Chưa có tài khoản? <a href="#">Tạo tài khoản ở đây</a>
+          No account? <a href="#">Create one here</a>
         </div>
       </div>
     </div>
