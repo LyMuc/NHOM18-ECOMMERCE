@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../style.css';
+import './style.css';
 
 function DeveloperCard({ name, role, imageUrl }){
     return (
@@ -17,6 +17,8 @@ function DeveloperCard({ name, role, imageUrl }){
 
 function AboutUs() {
     const [active, setActive] = useState('project');
+    // accordion state for the section below
+    const [accordionOpen, setAccordionOpen] = useState('mission');
 
     return (
         <>
@@ -89,6 +91,185 @@ function AboutUs() {
                     </div>
                 </div>
             </div>
+
+            {/* Inspiration/Innovation section */}
+            <section className="w-[94%] max-w-[1200px] mx-auto my-10">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-8 items-center">
+                    {/* Left column: heading + accordion */}
+                    <div className="order-2 lg:order-1">
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                            Inspiration, innovation,
+                            <br />
+                            and opportunities.
+                        </h2>
+                        <p className="text-gray-600 mb-6">
+                            Many Desktop Publishing Packages And Web Page Editors Now Use Lorem Ipsum As Their Default Model Text.
+                        </p>
+
+                        <div className="bg-white border border-gray-200 rounded-md divide-y divide-gray-200">
+                            {/* Item: Vision */}
+                            <div>
+                                <button
+                                    type="button"
+                                    className="w-full flex items-center justify-between gap-3 py-4 px-4 text-left"
+                                    aria-expanded={accordionOpen === 'vision'}
+                                    onClick={() => setAccordionOpen(accordionOpen === 'vision' ? null : 'vision')}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-gray-400 text-gray-600">
+                                            {/* chevron icon */}
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`h-4 w-4 transition-transform ${accordionOpen === 'vision' ? '' : ''}`}>
+                                                <path fillRule="evenodd" d="M12 14.5a1 1 0 0 1-.71-.29l-5-5a1 1 0 1 1 1.42-1.42L12 12.09l4.29-4.3a1 1 0 1 1 1.42 1.42l-5 5c-.19.19-.45.29-.71.29Z" />
+                                            </svg>
+                                        </span>
+                                        <span className="font-semibold text-gray-900">Business’s vision</span>
+                                    </div>
+                                </button>
+                                <div className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${accordionOpen === 'vision' ? 'max-h-40' : 'max-h-0'}`}>
+                                    <div className="pb-4 px-4 pr-6 text-gray-700 leading-relaxed text-sm md:text-base">
+                                        We aim to deliver delightful shopping experiences powered by modern technology and human‑centric design.
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Item: Mission */}
+                            <div>
+                                <button
+                                    type="button"
+                                    className="w-full flex items-center justify-between gap-3 py-4 px-4 text-left"
+                                    aria-expanded={accordionOpen === 'mission'}
+                                    onClick={() => setAccordionOpen(accordionOpen === 'mission' ? null : 'mission')}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-gray-400 text-gray-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`h-4 w-4 transition-transform ${accordionOpen === 'mission' ? '' : ''}`}>
+                                                <path fillRule="evenodd" d="M12 14.5a1 1 0 0 1-.71-.29l-5-5a1 1 0 1 1 1.42-1.42L12 12.09l4.29-4.3a1 1 0 1 1 1.42 1.42l-5 5c-.19.19-.45.29-.71.29Z" />
+                                            </svg>
+                                        </span>
+                                        <span className="font-semibold text-gray-900">Our mission</span>
+                                    </div>
+                                </button>
+                                <div className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${accordionOpen === 'mission' ? 'max-h-56' : 'max-h-0'}`}>
+                                    <div className="pb-4 px-4 pr-6 text-gray-700 leading-relaxed text-sm md:text-base">
+                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Item: Support */}
+                            <div>
+                                <button
+                                    type="button"
+                                    className="w-full flex items-center justify-between gap-3 py-4 px-4 text-left"
+                                    aria-expanded={accordionOpen === 'support'}
+                                    onClick={() => setAccordionOpen(accordionOpen === 'support' ? null : 'support')}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-gray-400 text-gray-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`h-4 w-4 transition-transform ${accordionOpen === 'support' ? '' : ''}`}>
+                                                <path fillRule="evenodd" d="M12 14.5a1 1 0 0 1-.71-.29l-5-5a1 1 0 1 1 1.42-1.42L12 12.09l4.29-4.3a1 1 0 1 1 1.42 1.42l-5 5c-.19.19-.45.29-.71.29Z" />
+                                            </svg>
+                                        </span>
+                                        <span className="font-semibold text-gray-900">Our support</span>
+                                    </div>
+                                </button>
+                                <div className={`overflow-hidden transition-[max-height] duration-300 ease-in-out ${accordionOpen === 'support' ? 'max-h-40' : 'max-h-0'}`}>
+                                    <div className="pb-4 px-4 pr-6 text-gray-700 leading-relaxed text-sm md:text-base">
+                                        Our support team is here to help with onboarding, troubleshooting, and any questions you have along the way.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right column: image */}
+                    <div className="order-1 lg:order-2">
+                        <div className="rounded-md overflow-hidden bg-gray-100 border border-gray-200">
+                            <img
+                                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1887&auto=format&fit=crop"
+                                alt="Innovation illustration"
+                                className="w-full h-[420px] md:h-[520px] object-cover"
+                                loading="lazy"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Features row */}
+            <section className="max-w-6xl mx-auto px-4 my-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Card 1 */}
+                    <div className="bg-white border border-gray-200 rounded-lg shadow-sm px-8 py-10 text-center">
+                        <span className="inline-flex h-12 w-12 items-center justify-center rounded-md text-red-500 mb-4">
+                            {/* Check icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-10 w-10">
+                                <path fillRule="evenodd" d="M2.25 12a9.75 9.75 0 1 1 19.5 0 9.75 9.75 0 0 1-19.5 0Zm14.28-3.53a.75.75 0 0 0-1.06-1.06l-5.72 5.72-1.97-1.97a.75.75 0 1 0-1.06 1.06l2.5 2.5c.3.3.77.3 1.06 0l6.25-6.25Z" clipRule="evenodd" />
+                            </svg>
+                        </span>
+                        <h3 className="text-xl font-semibold mb-2">Submit a task</h3>
+                        <p className="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.</p>
+                    </div>
+
+                    {/* Card 2 */}
+                    <div className="bg-white border border-gray-200 rounded-lg shadow-sm px-8 py-10 text-center">
+                        <span className="inline-flex h-12 w-12 items-center justify-center rounded-md text-red-500 mb-4">
+                            {/* Message icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-10 w-10">
+                                <path d="M1.5 6.75A2.25 2.25 0 0 1 3.75 4.5h16.5A2.25 2.25 0 0 1 22.5 6.75v7.5A2.25 2.25 0 0 1 20.25 16.5H7.6l-4.3 3.23A.75.75 0 0 1 2.25 19.2V6.75Z" />
+                            </svg>
+                        </span>
+                        <h3 className="text-xl font-semibold mb-2">Send message</h3>
+                        <p className="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.</p>
+                    </div>
+
+                    {/* Card 3 */}
+                    <div className="bg-white border border-gray-200 rounded-lg shadow-sm px-8 py-10 text-center">
+                        <span className="inline-flex h-12 w-12 items-center justify-center rounded-md text-red-500 mb-4">
+                            {/* User icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-10 w-10">
+                                <path fillRule="evenodd" d="M7.5 6.75a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM12 13.5a8.25 8.25 0 0 0-8.25 8.25.75.75 0 0 0 .75.75h15a.75.75 0 0 0 .75-.75A8.25 8.25 0 0 0 12 13.5Z" clipRule="evenodd" />
+                            </svg>
+                        </span>
+                        <h3 className="text-xl font-semibold mb-2">Trusted experience</h3>
+                        <p className="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus.</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Parallax stats section */}
+            <section className="my-10">
+                <div
+                    className="relative h-[320px] md:h-[380px] lg:h-[420px] bg-fixed bg-center bg-cover"
+                    style={{
+                        backgroundImage:
+                            'url(https://images.unsplash.com/photo-1554774853-719586f82d77?q=80&w=1974&auto=format&fit=crop)'
+                    }}
+                >
+                    {/* subtle dark overlay for readability */}
+                    <div className="absolute inset-0 bg-black/35"></div>
+                    <div className="relative z-[1] h-full max-w-6xl mx-auto px-4 flex items-center">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full text-center text-white">
+                            <div>
+                                <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-none">18+</div>
+                                <div className="mt-2 text-base md:text-lg opacity-95">Years</div>
+                            </div>
+                            <div>
+                                <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-none">200+</div>
+                                <div className="mt-2 text-base md:text-lg opacity-95">Employee</div>
+                            </div>
+                            <div>
+                                <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-none">85%</div>
+                                <div className="mt-2 text-base md:text-lg opacity-95">Page Views</div>
+                            </div>
+                            <div>
+                                <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-none">27+</div>
+                                <div className="mt-2 text-base md:text-lg opacity-95">Awards</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
         </>
     );
