@@ -91,6 +91,67 @@ const ContactUs = () => {
                     </form>
                 </div>
             </div>
+
+            {/* Info strip under Contact Us */}
+            <div className="max-w-6xl mx-auto px-4 mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+                    {/* Location */}
+                    <div className="flex items-center gap-4 bg-gray-100 px-6 py-8 border border-gray-200">
+                        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-red-400 text-red-500">
+                            {/* Map pin icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
+                                <path fillRule="evenodd" d="M11.47 3.84a6.75 6.75 0 0 1 8.69 9.96l-6.07 6.07a2.25 2.25 0 0 1-3.18 0l-6.08-6.07a6.75 6.75 0 0 1 6.64-9.96Zm0 3.66a2.34 2.34 0 1 0 0 4.68 2.34 2.34 0 0 0 0-4.68Z" clipRule="evenodd" />
+                            </svg>
+                        </span>
+                        <div className="text-gray-800">
+                            <div className="text-sm text-gray-600">Address :</div>
+                            <div className="font-medium">D9 Building, HUST</div>
+                        </div>
+                    </div>
+
+                    {/* Phone */}
+                    <div className="flex items-center gap-4 bg-gray-100 px-6 py-8 border border-gray-200">
+                        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-red-400 text-red-500">
+                            {/* Phone icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
+                                <path d="M2.25 6.75A3 3 0 0 1 5.25 3.75h1.3a1.5 1.5 0 0 1 1.42 1.03l.87 2.61a1.5 1.5 0 0 1-.34 1.51L7.7 10.66a12.07 12.07 0 0 0 5.64 5.64l1.76-1.8a1.5 1.5 0 0 1 1.51-.34l2.61.87a1.5 1.5 0 0 1 1.03 1.42v1.3a3 3 0 0 1-3 3h-.75c-8.28 0-15-6.72-15-15v-.75Z" />
+                            </svg>
+                        </span>
+                        <div className="text-gray-800">
+                            <div className="text-sm text-gray-600">Call us :</div>
+                            <div className="font-medium">+00 123-456-789</div>
+                        </div>
+                    </div>
+
+                    {/* Mail */}
+                    <div className="flex items-center gap-4 bg-gray-100 px-6 py-8 border border-gray-200">
+                        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-red-400 text-red-500">
+                            {/* Mail icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
+                                <path d="M1.5 6.75A2.25 2.25 0 0 1 3.75 4.5h16.5A2.25 2.25 0 0 1 22.5 6.75v10.5A2.25 2.25 0 0 1 20.25 19.5H3.75A2.25 2.25 0 0 1 1.5 17.25V6.75Zm3.02-.75 7.73 5.16 7.73-5.16H4.52Zm15.73 12V8.14l-7.35 4.9a1.5 1.5 0 0 1-1.65 0L3.9 8.14v9.86h16.35Z" />
+                            </svg>
+                        </span>
+                        <div className="text-gray-800">
+                            <div className="text-sm text-gray-600">Mail us :</div>
+                            <div className="font-medium">demo@example.com</div>
+                        </div>
+                    </div>
+
+                    {/* Open time */}
+                    <div className="flex items-center gap-4 bg-gray-100 px-6 py-8 border border-gray-200">
+                        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-red-400 text-red-500">
+                            {/* Clock icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
+                                <path fillRule="evenodd" d="M12 2.25a9.75 9.75 0 1 0 0 19.5 9.75 9.75 0 0 0 0-19.5Zm.75 5.25a.75.75 0 0 0-1.5 0v5.19l3.62 2.17a.75.75 0 1 0 .76-1.29l-2.88-1.73V7.5Z" clipRule="evenodd" />
+                            </svg>
+                        </span>
+                        <div className="text-gray-800">
+                            <div className="text-sm text-gray-600">Open time :</div>
+                            <div className="font-medium">10:00AM – 6:00PM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
