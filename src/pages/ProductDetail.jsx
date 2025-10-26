@@ -2,12 +2,24 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faInstagram, faTiktok, faWhatsapp, faPinterest, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faLink, faTruckFast, faTruckRampBox, faShieldHalved, faComments, faThumbsUp, faThumbsDown, faFlag, faPen } from "@fortawesome/free-solid-svg-icons";
+import { Dialog, DialogTitle, DialogActions, DialogContent, Rating, TextField, FormControlLabel, Checkbox } from "@mui/material";
+import { IoClose } from "react-icons/io5";
+
 const ProductDetail = () => {
 
     const [selectedImage, setSelectedImage] = useState(0);
     const [selectedColor, setSelectedColor] = useState("gold");  
     const [quantity, setQuantity] = useState(1);
     const [activeTab, setActiveTab] = useState("description");
+
+    const[openReviewDialog, setOpenReviewDialog] = useState(false);
+    const[reviewForm, setReviewForm] = useState({
+        title: "",
+        name: "",
+        review: "",
+        rating: 3,
+        agreeTerms: false
+    });
 
     const images = [
         "https://prestashop.codezeel.com/PRS21/PRS210502/default/117-large_default/apple-watch-se-44mm-gpscellular-gold.jpg",
@@ -183,9 +195,9 @@ const ProductDetail = () => {
                             ))}
                         </div>
 
-                    <span className="text-gray-600 text-sm">
-                        ({product.reviews} Reviews)
-                    </span>
+                        <span className="text-gray-600 text-sm">
+                            ({product.reviews} Reviews)
+                        </span>
 
                     </div>
 
@@ -194,7 +206,7 @@ const ProductDetail = () => {
                         {
                             product.features.map((feature, index) => (
                             <li key={index} className="flex items-start gap-2 text-gray-700">
-                                <span className="text-green-500 mt-1">•</span>
+                                <span className="mt-0 font-extrabold">•</span>
                                 <span>{feature}</span>
                             </li>
                             ))
@@ -540,13 +552,60 @@ const ProductDetail = () => {
 
                 {/* Write Review Button */}
                 <div className="flex justify-center mt-8">
-                    <button className="bg-red-500 hover:bg-black text-white font-semibold px-8 py-3 rounded-lg transition-colors flex items-center gap-2">
+                    <button onClick={() => setOpenReviewDialog(true)} className="bg-red-500 hover:bg-black text-white font-semibold px-8 py-3 rounded-lg transition-colors flex items-center gap-2">
                         <FontAwesomeIcon icon={faPen} />
                         <span>WRITE YOUR REVIEW</span>
                     </button>
                 </div>
 
             </div>
+
+            <Dialog open={openReviewDialog} onClose={() => setOpenReviewDialog(false)} maxWidth="sm" fullWidth>
+                {/* Header */}
+                <DialogTitle className="font-extrabold">Write Your Review</DialogTitle>
+                <DialogContent className="pt-6">
+                    {/* Product Info */}
+                    <div className="flex gap-4 mb-6">
+                        <img src={images[0]} className="w-20 h-20 object-cover " />
+                        <div className="flex-1">
+                            <h3 className="text-lg font-bold text-gray-900">{product.name}</h3>
+                            <ul className="text-sm text-gray-700">
+                                {
+                                    product.features.map((feature, index) => (
+                                        <li key={index}>{feature}</li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center gap-4 mb-6">
+                        <span>Quality:</span>
+                        <Rating value={reviewForm.rating} onChange={(e, newValue) => setReviewForm({...reviewForm, rating: newValue})} size="large"></Rating>
+                    </div>
+
+                    {/* Form Fields */}
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                        <TextField label="Review Title" required fullWidth value={reviewForm.title} onChange={(e) => setReviewForm({...reviewForm, title: e.target.value})}></TextField>
+                        <TextField label="Your name" required fullWidth value={reviewForm.name} onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})}></TextField>
+                    </div>
+                    <TextField label="Review" required fullWidth multiline rows={4} value={reviewForm.review} onChange={(e) => setReviewForm({...reviewForm, review: e.target.value})} className="mb-4"></TextField>
+                    
+
+                    {/* Terms Checkbox */}
+                    <FormControlLabel control={<Checkbox checked={reviewForm.agreeTerms} onChange={(e) => setReviewForm({...reviewForm, agreeTerms: e.target.checked})}></Checkbox>} label="I agree to the terms and conditions and the privacy policy"></FormControlLabel>
+                    <p className="text-sm text-gray-500 mt-2">*Required fields</p>
+
+                    
+                </DialogContent>
+                {/* Action Buttons */}
+                <DialogActions>
+                    <button onClick={() => setOpenReviewDialog(false)} className="px-6 py-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors font-semibold">CANCEL</button>
+                    <button onClick={() => setOpenReviewDialog(false)} className="px-6 py-2 text-white bg-red-500 border-red-600 rounded hover:bg-red-600 transition-colors font-semibold">SEND</button>
+                </DialogActions>
+            </Dialog>
+                                
         </div>
 
         
