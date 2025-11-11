@@ -1,6 +1,5 @@
 import React, { StrictMode } from 'react';
 import './sign_up.css';
-import { createRoot } from 'react-dom/client';
 
 const SignUp = () => {
 	return (
@@ -99,12 +98,6 @@ const SignUp = () => {
 		</div>
 	);
 };
-
-createRoot(document.getElementById('root')).render(
-	<StrictMode>
-		<SignUp />
-	</StrictMode>
-);
 
 export default SignUp;
 

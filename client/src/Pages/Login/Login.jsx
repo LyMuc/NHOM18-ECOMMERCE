@@ -1,6 +1,5 @@
 import React, { StrictMode } from 'react';
 import './login.css';
-import { createRoot } from 'react-dom/client';
 
 const Login = () => {
   return (
@@ -28,11 +27,5 @@ const Login = () => {
     </div>
   );
 };
-
-createRoot(document.getElementById('root')).render(
-    <StrictMode>
-      <Login />
-    </StrictMode>
-);
 
 export default Login;

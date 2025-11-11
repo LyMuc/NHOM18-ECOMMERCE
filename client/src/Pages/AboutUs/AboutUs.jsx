@@ -1,24 +1,7 @@
 import React, { StrictMode, useState } from 'react';
 import './about_us.css';
-import { createRoot } from 'react-dom/client';
-import './style.css';
-
-function DeveloperCard({ name, role, imageUrl }){
-    return (
-        <>
-            <div className="dev_container">
-                <div className="dev_preview">
-                    <img src={imageUrl} alt={`${name}'s profile`} className="dev_image" />
-                    <h2 className="dev_name">{name}</h2>
-                </div>
-                <div className="dev_details">
-                    <p className="dev_role">Role: {role}</p>
-                    {/* you can add email, contact or a short bio here */}
-                </div>
-            </div>
-        </>
-    )
-}
+import '../../style.css';
+import DeveloperCard from '../../components/DeveloperCard';
 
 function AboutUs() {
         const [active, setActive] = useState('project'); // 'project' or 'members'
@@ -84,8 +67,5 @@ function AboutUs() {
                 </>
         )
 }
-createRoot(document.getElementById('root')).render(
-    <StrictMode>
-      <AboutUs />
-    </StrictMode>
-);
+
+export default AboutUs;
