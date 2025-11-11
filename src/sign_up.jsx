@@ -1,5 +1,4 @@
-import React, { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import React from 'react';
 
 const SignUp = () => {
 	return (
@@ -90,12 +89,6 @@ const SignUp = () => {
 		</div>
 	);
 };
-
-createRoot(document.getElementById('root')).render(
-	<StrictMode>
-		<SignUp />
-	</StrictMode>
-);
 
 export default SignUp;
 
