@@ -503,7 +503,7 @@ const ProductDetail = () => {
                 <div>
                     <div className="divide-y divide-gray-200">
                         {
-                            reviews.map((review, index) => (
+                            reviews.map((review) => (
                                 <div key={review.id} className="p-6 bg-white">
                                     <div className="flex gap-6 ">
                                         {/* Left column - Rating, Date & Author */}
