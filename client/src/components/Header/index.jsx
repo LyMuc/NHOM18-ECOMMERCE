@@ -60,7 +60,7 @@ const Header = () => {
                         <ul className="flex items-center justify-end gap-3 w-full">
                             <li className="list-none">
                                 <Link to={"/login"} className="link transition text-[15px] font-[500]">Login</Link> |&nbsp; 
-                                <Link to={"/register"} className="link transition text-[15px] font-[500]">Register</Link>
+                                <Link to={"/signup"} className="link transition text-[15px] font-[500]">Register</Link>
                             </li>
 
                             <li>
