@@ -19,7 +19,6 @@ function App() {
             <Route path="/about_us" exact={true} element={<AboutUs/>}/>
           </Routes>
       </BrowserRouter>
-      
     </>
 
   )
