@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css';
+import '../../style.css';
 
 // Contact Us page styled with TailwindCSS
 // Interactive map via Google Maps embed (no API key required)
