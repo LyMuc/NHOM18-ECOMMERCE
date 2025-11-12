@@ -5,6 +5,7 @@ import ProductDetail from './Pages/ProductDetail/ProductDetail.jsx'
 import Login from "./Pages/Login/Login.jsx";
 import SignUp from "./Pages/SignUp/SignUp.jsx";
 import AboutUs from "./Pages/AboutUs/AboutUs.jsx";
+import ContactUs from "./Pages/ContactUs/ContactUs.jsx";
 
 function App() {
   return (
@@ -17,9 +18,9 @@ function App() {
             <Route path="/login" exact={true} element={<Login/>}/>
             <Route path="/signup" exact={true} element={<SignUp/>}/>
             <Route path="/about_us" exact={true} element={<AboutUs/>}/>
+            <Route path="/contact_us" exact={true} element={<ContactUs/>}/>
           </Routes>
       </BrowserRouter>
-      
     </>
 
   )
