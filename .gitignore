@@ -1,0 +1,13 @@
+# Node/MERN
+node_modules/
+dist/
+build/
+coverage/
+logs/
+*.log
+
+# Env files
+.env
+**/.env
+client/.env
+server/.env
