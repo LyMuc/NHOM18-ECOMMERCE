@@ -1,7 +1,19 @@
-import React, { StrictMode, useState } from 'react';
-import './about_us.css';
+import React, { useState } from 'react';
 import '../../style.css';
-import DeveloperCard from '../../components/DeveloperCard';
+
+function DeveloperCard({ name, role, imageUrl }){
+    return (
+        <div className="group w-[250px] flex flex-col items-center my-6 mx-auto bg-white border-[3px] border-red-500 rounded-[10px] shadow transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg">
+            <div className="flex flex-col items-center">
+                <img src={imageUrl} alt={`${name}'s profile`} className="w-[120px] h-[120px] rounded-full m-4 object-cover" />
+                <h2 className="mb-2 font-semibold">{name}</h2>
+            </div>
+            <div className="w-full box-border px-4 max-h-0 overflow-hidden opacity-0 -translate-y-2 transition-[max-height,opacity,transform] duration-300 ease-in-out group-hover:max-h-[200px] group-hover:opacity-100 group-hover:translate-y-0 flex flex-col items-center">
+                <p className="my-2 text-base text-gray-700">Role: {role}</p>
+            </div>
+        </div>
+    );
+}
 
 function AboutUs() {
     const [active, setActive] = useState('project');
