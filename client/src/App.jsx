@@ -9,6 +9,9 @@ import Cart from "./Pages/Cart";
 import MyAccount from "./Pages/MyAccount";
 import EditAddress from "./Pages/Addresses/Edit";
 
+import ContactUs from "./Pages/ContactUs/ContactUs.jsx";
+import Wishlist from "./Pages/Wishlist";
+import Checkout from "./Pages/Checkout";
 
 function App() {
   return (
@@ -25,9 +28,11 @@ function App() {
             <Route path="/my_account" exact={true} element={<MyAccount/>}/>
             <Route path="/addresses/new" exact={true} element={<EditAddress/>}/>
             <Route path="/addresses/edit/:id" exact={true} element={<EditAddress/>}/>
+            <Route path="/contact_us" exact={true} element={<ContactUs/>}/>
+            <Route path="/wishlist" exact={true} element={<Wishlist/>}/>
+            <Route path="/checkout" exact={true} element={<Checkout/>}/>
           </Routes>
       </BrowserRouter>
-      
     </>
 
   )

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faInstagram, faTiktok, faWhatsapp, faPinterest, faXTwitter } from "@fortawesome/free-brands-svg-icons";
-import { faLink, faTruckFast, faTruckRampBox, faShieldHalved } from "@fortawesome/free-solid-svg-icons";
+import { faLink, faTruckFast, faTruckRampBox, faShieldHalved, faComments, faThumbsUp, faThumbsDown, faFlag, faPen } from "@fortawesome/free-solid-svg-icons";
+import { Dialog, DialogTitle, DialogActions, DialogContent, Rating, TextField, FormControlLabel, Checkbox } from "@mui/material";
+import { IoClose } from "react-icons/io5";
 
 const ProductDetail = () => {
 
@@ -10,12 +12,94 @@ const ProductDetail = () => {
     const [quantity, setQuantity] = useState(1);
     const [activeTab, setActiveTab] = useState("description");
 
+    const[openReviewDialog, setOpenReviewDialog] = useState(false);
+    const[reviewForm, setReviewForm] = useState({
+        title: "",
+        name: "",
+        review: "",
+        rating: 3,
+        agreeTerms: false
+    });
+
     const images = [
-    "https://prestashop.codezeel.com/PRS21/PRS210502/default/117-large_default/apple-watch-se-44mm-gpscellular-gold.jpg",
-    "https://prestashop.codezeel.com/PRS21/PRS210502/default/118-large_default/apple-watch-se-44mm-gpscellular-gold.jpg",
-    "https://prestashop.codezeel.com/PRS21/PRS210502/default/119-large_default/apple-watch-se-44mm-gpscellular-gold.jpg",
-    "https://prestashop.codezeel.com/PRS21/PRS210502/default/120-large_default/apple-watch-se-44mm-gpscellular-gold.jpg"
-  ];
+        "https://prestashop.codezeel.com/PRS21/PRS210502/default/117-large_default/apple-watch-se-44mm-gpscellular-gold.jpg",
+        "https://prestashop.codezeel.com/PRS21/PRS210502/default/118-large_default/apple-watch-se-44mm-gpscellular-gold.jpg",
+        "https://prestashop.codezeel.com/PRS21/PRS210502/default/119-large_default/apple-watch-se-44mm-gpscellular-gold.jpg",
+        "https://prestashop.codezeel.com/PRS21/PRS210502/default/120-large_default/apple-watch-se-44mm-gpscellular-gold.jpg"
+    ];
+
+    const relatedProducts = [
+        {
+            id: 1,
+            name: "Real Diamond Jewellery Gold Diamond Ring",
+            brand: "Cartify",
+            price: 129.00,
+            rating: 5,
+            reviews: 3,
+            image: "https://prestashop.codezeel.com/PRS21/PRS210502/default/2-home_default/real-diamond-jewellery-gold-diamond-ring.jpg",
+            badge: "-15%"
+        },
+        {
+            id: 2,
+            name: "Diamond Stud Eulla Earring Rose Gold",
+            brand: "EcomZone",
+            price: 250.00,
+            rating: 5,
+            reviews: 2,
+            image: "https://prestashop.codezeel.com/PRS21/PRS210502/default/8-home_default/diamond-stud-eulla-earring-rose-gold.jpg",
+            badge: "-10%"
+        },
+        {
+            id: 3,
+            name: "MVMT Chrono Analog Black Dial Men Watch",
+            brand: "MegaMart",
+            price: 46.00,
+            oldPrice: 56.00,
+            rating: 5,
+            reviews: 3,
+            image: "https://prestashop.codezeel.com/PRS21/PRS210502/default/30-home_default/mvmt-chrono-analog-black-dial-men-watch.jpg",
+            badge: "-8%"
+        },
+        {
+            id: 4,
+            name: "Google Pixel Buds Pro - Noise Canceling Earbuds",
+            brand: "EcomZone",
+            price: 55.00,
+            rating: 4,
+            reviews: 4,
+            image: "https://prestashop.codezeel.com/PRS21/PRS210502/default/86-home_default/google-pixel-buds-pro-noise-canceling-earbuds.jpg"
+        },
+        {
+            id: 5,
+            name: "Lizoleor Slip On Block Heels Women Pointed Toe",
+            brand: "EcomZone",
+            price: 21.00,
+            rating: 5,
+            reviews: 4,
+            image: "https://prestashop.codezeel.com/PRS21/PRS210502/default/104-home_default/lizoleor-slip-on-block-heels-women-pointed-toe.jpg"
+        },
+        {
+            id: 6,
+            name: "Evans Lichfield Sunningdale Velvet Pillow",
+            brand: "QuickCart",
+            price: 35.00,
+            rating: 5,
+            reviews: 3,
+            image: "https://prestashop.codezeel.com/PRS21/PRS210502/default/151-home_default/evans-lichfield-sunningdale-velvet-pillow.jpg",
+            badge: "PACK"
+        },
+        {
+            id: 7,
+            name: "Rico Lounge Chair Single Sofas Poufs",
+            brand: "SmartShop",
+            price: 89.00,
+            rating: 4,
+            reviews: 5,
+            image: "https://prestashop.codezeel.com/PRS21/PRS210502/default/155-home_default/rico-lounge-chair-single-sofas-poufs.jpg",
+            badge: "-15%"
+        }
+    ];
+
 
     const product = {
         brand: "MegaMart",
@@ -35,9 +119,42 @@ const ProductDetail = () => {
         ]
     }
 
+    const reviews = [
+        {
+            id: 1,
+            author: "Lily Wright",
+            date: "4/22/25, 12:57 AM",
+            rating: 5,
+            title: "Wow it's amazing.",
+            comment: "Light weight and easy to use , super product.I am happy 😊",
+            likes: 0,
+            dislikes: 0
+        },
+        {
+            id: 2,
+            author: "Jan Novak",
+            date: "4/22/25, 12:56 AM",
+            rating: 5,
+            title: "Elevates Any Room",
+            comment: "A beautiful focal point that makes a lasting impression!",
+            likes: 0,
+            dislikes: 0
+        },
+        {
+            id: 3,
+            author: "Chloe Brooks",
+            date: "4/22/25, 12:56 AM",
+            rating: 4,
+            title: "A Perfect Statement Piece",
+            comment: "This item is truly a showstopper!!!",
+            likes: 0,
+            dislikes: 0
+        }
+    ]
+
 
     return(
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 bg-white">
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Product Images */}
@@ -53,7 +170,7 @@ const ProductDetail = () => {
                     </div>
 
                     {/* Main Image */}
-                    <div className="flex-1 bg-gray-50 rounded-lg overflow-hidden shadow-md aspect-square max-h-[600px]" >
+                    <div className="flex-1 bg-gray-50 rounded-lg overflow-hidden shadow-md aspect-square max-h-[500px]" >
                         <img src={images[selectedImage]} alt="Product main view" className="w-full h-auto object-cover" />
                     </div>
 
@@ -78,9 +195,9 @@ const ProductDetail = () => {
                             ))}
                         </div>
 
-                    <span className="text-gray-600 text-sm">
-                        ({product.reviews} Reviews)
-                    </span>
+                        <span className="text-gray-600 text-sm">
+                            ({product.reviews} Reviews)
+                        </span>
 
                     </div>
 
@@ -89,7 +206,7 @@ const ProductDetail = () => {
                         {
                             product.features.map((feature, index) => (
                             <li key={index} className="flex items-start gap-2 text-gray-700">
-                                <span className="text-green-500 mt-1">•</span>
+                                <span className="mt-0 font-extrabold">•</span>
                                 <span>{feature}</span>
                             </li>
                             ))
@@ -141,10 +258,10 @@ const ProductDetail = () => {
 
                     {/* Action Buttons */}
                     <div className="space-y-3">
-                        <button className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 rounded-lg transition-colors">
+                        <button className="w-full bg-red-500 hover:bg-black text-white font-semibold py-3 rounded-lg transition-colors">
                             ADD TO CART
                         </button>
-                        <button className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 rounded-lg transition-colors">
+                        <button className="w-full bg-black hover:bg-red-600 text-white font-semibold py-3 rounded-lg transition-colors">
                             BUY NOW
                         </button>
                     </div>
@@ -300,6 +417,195 @@ const ProductDetail = () => {
                     }
                 </div>
             </div>
+
+
+            {/* Related Products Section */}
+            <div className="max-w-7xl mx-auto px-4 mt-16 mb-12">
+                <h2 className="text-2xl font-bold mb-6">You might also like</h2>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                    {
+                        relatedProducts.map((item) => (
+                            <div key={item.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow group">
+
+                                {/* Product Image */}
+                                <div className="relative aspect-square overflow-hidden bg-gray-50">
+                                    <img src={item.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                    {
+                                        item.badge && (
+                                            <div className={`absolute top-2 left-2 px-2 py-1 text-xs font-bold text-white rounded ${item.badge === "PACK" ? "bg-green-500" : "bg-red-500"}`}>
+                                                {item.badge}
+                                            </div>
+                                        )
+                                    }
+                                </div>
+
+                                {/* Product Info */}
+                                <div className="p-3">
+                                    {/* Brand */}
+                                    <p className="text-xs text-gray-500 mb-1">{item.brand}</p>
+
+                                    {/* Product Name */}
+                                    <h3 className="text-sm font-medium text-gray-900 mb-2 line-clamp-2 h-10">
+                                        {item.name}
+                                    </h3>
+
+                                    {/* Rating */}
+                                    <div className="flex items-center gap-1 mb-2">
+                                        <div className="flex text-yellow-400 text-xs">
+                                            {
+                                                [...Array(5)].map((_, i) => (
+                                                    <span key={i}>{i < item.rating ? "★" : "☆"}</span>
+                                                ))
+                                            }
+                                        </div>
+                                        <span className="text-xs text-gray-500">({item.reviews})</span>
+                                    </div>
+
+                                    {/* Price */}
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-lg font-bold text-red-500">${item.price.toFixed(2)}</span>
+                                        {
+                                            item.oldPrice && (
+                                                <span className="text-sm text-gray-400 line-through">${item.oldPrice.toFixed(2)}</span>
+                                            )
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+
+            {/* Reviews Section */}
+            <div className="max-w-7xl mx-auto px-4 mt-16 mb-12">
+                {/* Reviews Header*/}
+                <div className="flex items-center justify-between bg-gray-100 px-6 py-4 rounded-lg border border-gray-100">
+                    <div className="flex items-center gap-3">
+                        <FontAwesomeIcon icon={faComments} className="text-gray-600" />
+                        <h2>Comments ({reviews.length})</h2>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="font-semibold">Grade</span>
+                        <div className="flex text-yellow-400 text-xl">
+                            {
+                                [...Array(5)].map((_, i) => (
+                                    <span key={i}>★</span>
+                                ))
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                {/* Reviews List */}
+                <div>
+                    <div className="divide-y divide-gray-200">
+                        {
+                            reviews.map((review) => (
+                                <div key={review.id} className="p-6 bg-white">
+                                    <div className="flex gap-6 ">
+                                        {/* Left column - Rating, Date & Author */}
+                                        <div className="flex-shrink-0 w-48 border-r border-gray-200">
+                                            {/* Rating */}
+                                            <div className="flex text-yellow-400 text-lg mb-3">
+                                                {
+                                                    [...Array(5)].map((_, i) => (
+                                                        <span key={i}>{i < review.rating ? "★" : "☆"}</span>
+                                                    ))
+                                                }
+                                            </div>
+                                            {/* Date */}
+                                            <p className="text-sm text-gray-600 mb-2">{review.date}</p>
+                                            {/* Author */}
+                                            <p className="text-sm text-gray-900 font-medium">By {review.author}</p>
+                                        </div>
+
+                                        {/* Right column - Title, Comment, Likes/Dislikes */}
+                                        <div className="flex-1">
+                                            {/* Review Title */}
+                                            <h3 className="font-bold text-gray-900 text-lg mb-2">{review.title}</h3>
+                                            {/* Review Comment */}
+                                            <p className="text-gray-700 mb-4 leading-relaxed">{review.comment}</p>
+                                            {/* Action Buttons */}
+                                            <div className="flex items-center gap-4 text-sm">
+                                                <button className="flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors">
+                                                    <FontAwesomeIcon icon={faThumbsUp}/>
+                                                    <span>{review.likes}</span>
+                                                </button>
+                                                <button className="flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors">
+                                                    <FontAwesomeIcon icon={faThumbsDown}/>
+                                                    <span>{review.dislikes}</span>
+                                                </button>
+                                                <button className="flex items-center gap-2 text-gray-600 hover:text-orange-600 transition-colors">
+                                                    <FontAwesomeIcon icon={faFlag} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                {/* Write Review Button */}
+                <div className="flex justify-center mt-8">
+                    <button onClick={() => setOpenReviewDialog(true)} className="bg-red-500 hover:bg-black text-white font-semibold px-8 py-3 rounded-lg transition-colors flex items-center gap-2">
+                        <FontAwesomeIcon icon={faPen} />
+                        <span>WRITE YOUR REVIEW</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <Dialog open={openReviewDialog} onClose={() => setOpenReviewDialog(false)} maxWidth="sm" fullWidth>
+                {/* Header */}
+                <DialogTitle className="font-extrabold">Write Your Review</DialogTitle>
+                <DialogContent className="pt-6">
+                    {/* Product Info */}
+                    <div className="flex gap-4 mb-6">
+                        <img src={images[0]} className="w-20 h-20 object-cover " />
+                        <div className="flex-1">
+                            <h3 className="text-lg font-bold text-gray-900">{product.name}</h3>
+                            <ul className="text-sm text-gray-700">
+                                {
+                                    product.features.map((feature, index) => (
+                                        <li key={index}>{feature}</li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="flex items-center gap-4 mb-6">
+                        <span>Quality:</span>
+                        <Rating value={reviewForm.rating} onChange={(e, newValue) => setReviewForm({...reviewForm, rating: newValue})} size="large"></Rating>
+                    </div>
+
+                    {/* Form Fields */}
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                        <TextField label="Review Title" required fullWidth value={reviewForm.title} onChange={(e) => setReviewForm({...reviewForm, title: e.target.value})}></TextField>
+                        <TextField label="Your name" required fullWidth value={reviewForm.name} onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})}></TextField>
+                    </div>
+                    <TextField label="Review" required fullWidth multiline rows={4} value={reviewForm.review} onChange={(e) => setReviewForm({...reviewForm, review: e.target.value})} className="mb-4"></TextField>
+                    
+
+                    {/* Terms Checkbox */}
+                    <FormControlLabel control={<Checkbox checked={reviewForm.agreeTerms} onChange={(e) => setReviewForm({...reviewForm, agreeTerms: e.target.checked})}></Checkbox>} label="I agree to the terms and conditions and the privacy policy"></FormControlLabel>
+                    <p className="text-sm text-gray-500 mt-2">*Required fields</p>
+
+                    
+                </DialogContent>
+                {/* Action Buttons */}
+                <DialogActions>
+                    <button onClick={() => setOpenReviewDialog(false)} className="px-6 py-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors font-semibold">CANCEL</button>
+                    <button onClick={() => setOpenReviewDialog(false)} className="px-6 py-2 text-white bg-red-500 border-red-600 rounded hover:bg-red-600 transition-colors font-semibold">SEND</button>
+                </DialogActions>
+            </Dialog>
+                                
         </div>
 
         
