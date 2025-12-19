@@ -13,7 +13,7 @@ const SignUp = () => {
 			<div className="flex justify-center px-4">
 				<div className="bg-white border border-gray-200 rounded-lg max-w-[760px] w-full p-6 md:p-6">
 					<div className="text-gray-600 text-sm mb-4">
-						Already have an account? <a href="#" className="text-gray-900 font-semibold">Log in instead!</a>
+						Already have an account? <a href="/login" className="text-gray-900 font-semibold">Log in instead!</a>
 					</div>
 
 					<form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>

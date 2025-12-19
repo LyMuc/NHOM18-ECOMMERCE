@@ -21,7 +21,7 @@ const Login = () => {
         </a>
         <button className="w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded font-bold mb-5">SIGN IN</button>
         <div className="text-center text-gray-800 text-sm">
-          No account? <a href="#" className="font-semibold hover:underline">Create one here</a>
+          No account? <a href="/signup" className="font-semibold hover:underline">Create one here</a>
         </div>
       </div>
     </div>
