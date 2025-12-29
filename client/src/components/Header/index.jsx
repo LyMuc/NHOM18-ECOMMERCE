@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, Links } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Search from "../Search";
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
@@ -9,6 +9,8 @@ import { IoGitCompareOutline } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa6";
 import Tooltip from '@mui/material/Tooltip';
 import Navigation from "./Navigation";
+import { MyContext } from "../../App";
+import { postData } from "../../utils/api";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -20,6 +22,21 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const Header = () => {
+    const context = useContext(MyContext);
+    const history = useNavigate();
+
+    const handleLogout = async () => {
+        // Gọi API logout để xóa cookie
+        const res = await postData("/api/users/logout", {});
+        
+        if (res?.error === false) {
+            context.setIsLogin(false);
+            context.setUserData(null);
+            context.alertBox("success", "Logged out successfully");
+            history("/login");
+        }
+    };
+
    return (
     <>
         <header className="bg-white">
@@ -58,9 +75,32 @@ const Header = () => {
                     </div>
                     <div className="col3 w-[30%] flex items-center pl-7">
                         <ul className="flex items-center justify-end gap-3 w-full">
+                            
+                            {/* Logic hiển thị tên người dùng hoặc Login/Register */}
                             <li className="list-none">
-                                <Link to={"/login"} className="link transition text-[15px] font-[500]">Login</Link> |&nbsp; 
-                                <Link to={"/signup"} className="link transition text-[15px] font-[500]">Register</Link>
+                                {context.isLogin ? (
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-[15px] font-[600] text-gray-800">
+                                            Welcome, {context.userData?.name || "User"}
+                                        </span>
+                                        <span className="text-gray-400">|</span>
+                                        <Link to="/my_account" className="link transition text-[14px] font-[500]">
+                                            My Account
+                                        </Link>
+                                        <span className="text-gray-400">|</span>
+                                        <button 
+                                            onClick={handleLogout} 
+                                            className="link transition text-[14px] font-[500] hover:text-red-500"
+                                        >
+                                            Logout
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <Link to={"/login"} className="link transition text-[15px] font-[500]">Login</Link> |&nbsp; 
+                                        <Link to={"/signup"} className="link transition text-[15px] font-[500]">Register</Link>
+                                    </>
+                                )}
                             </li>
 
                             <li>

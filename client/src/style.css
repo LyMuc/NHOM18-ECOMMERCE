@@ -8,6 +8,10 @@ body{
     overflow-x: hidden;
 }
 
+p{font-size: 14px; line-height: 25px; margin-bottom: 10px; margin-top: 10px;}
+
+h1, h2, h3, h4, h5, h6{font-weight: 600;}
+
 ::-webkit-scrollbar{
     width: 8px !important;
     height: 8px !important;
@@ -26,8 +30,8 @@ header .top-strip{
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.link:hover{
-    color: #ff5252;
+.link:hover,.Mui-checked{
+    color: #ff5252 !important;
 }
 
 .bg-org{
@@ -110,6 +114,17 @@ nav ul button:hover{
     margin-right: -15px;
 }
 
+.btn-org{background: #ff5252 !important; color: #fff !important; font-weight: 500; font-size: 16px; padding: 7px 20px !important; border:1px solid transparent !important; }
+.btn-org:hover{background: #171717 !important;}
+
+.btn-org.btn-border{background: none !important; color: #ff5252 !important; border:1px solid #ff5252 !important; font-weight: 500; font-size: 16px; padding: 7px 20px !important;}
+.btn-org.btn-border:hover{background: #171717 !important; color: #fff !important;  border:1px solid #171717 !important;}
+
+.otpBox input{border: 1px solid rgba(0,0,0,0.3) !important; outline: none !important;
+  border-radius: 4px;}
+  .otpBox input:focus{border: 1px solid rgba(0,0,0,0.7) !important;}
+  
+  .otpPage .container{height:90vh; display: flex;}
 
 
 
