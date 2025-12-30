@@ -10,6 +10,14 @@ const MyList = () => {
 
   const context = useContext(MyContext);
 
+  if (!context?.userData || !context?.myListData) {
+    return (
+      <section className="p-10 text-center text-gray-500">
+        Đang tải danh sách yêu thích...
+      </section>
+    );
+  }
+
   useEffect(()=>{
     window.scrollTo(0,0);
   },[]);

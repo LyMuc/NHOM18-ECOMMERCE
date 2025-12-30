@@ -33,6 +33,11 @@ const MyAccount = () => {
   });
 
   const context = useContext(MyContext);
+
+  if (!context?.userData) {
+    return <div className="p-10 text-center text-gray-500">Đang tải thông tin tài khoản...</div>;
+  }
+  
   const history = useNavigate();
 
   useLayoutEffect(() => {

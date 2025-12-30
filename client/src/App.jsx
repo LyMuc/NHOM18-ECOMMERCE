@@ -92,6 +92,8 @@ function App() {
       toast.error(msg)
     }
   }
+
+  const [isAppReady, setIsAppReady] = useState(false);
   
   // Kiểm tra authentication từ cookie
   useEffect(() => {
@@ -116,6 +118,8 @@ function App() {
         console.log("Chua dang nhap: ", error);
         setIsLogin(false);
         setUserData(null);
+      } finally {
+        setIsAppReady(true); // chỉ render sau khi kiểm tra xong
       }
     };
 
@@ -261,7 +265,11 @@ function App() {
     <>
       <BrowserRouter>
         <MyContext.Provider value={values}>
-          <Header></Header>
+          <Header />
+
+          {!isAppReady ? (
+            <div className="text-center p-10">Đang tải dữ liệu người dùng...</div>
+          ) : (
           <Routes>
             <Route path="/" exact={true} element={<Home/>}/>
             {/* <Route path="/productDetail" exact={true} element={<ProductDetail/>}/> */}
@@ -292,7 +300,8 @@ function App() {
             <Route path={"/order/success"} exact={true} element={<OrderSuccess />} />
             <Route path={"/order/failed"} exact={true} element={<OrderFailed />} />
             <Route path={"/search"} exact={true} element={<SearchPage />} />
-          </Routes>
+          </Routes> 
+          )}
           <Footer />
         </MyContext.Provider>
       </BrowserRouter>

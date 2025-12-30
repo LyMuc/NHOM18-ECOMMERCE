@@ -27,6 +27,15 @@ const ProductListing = () => {
 
   const context = useContext(MyContext);
 
+  if (!productsData?.products) {
+    return (
+      <section className="p-10 text-center text-gray-500">
+        Đang tải danh sách sản phẩm...
+      </section>
+    );
+  }
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [])

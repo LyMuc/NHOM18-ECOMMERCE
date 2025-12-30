@@ -22,17 +22,28 @@ export const Reviews = (props) => {
 
     const context = useContext(MyContext);
 
-    useEffect(() => {
-        setReviews(() => ({
-            ...reviews,
-            image: context?.userData?.avatar,
-            userName: context?.userData?.name,
-            userId: context?.userData?._id,
-            productId: props?.productId
-        }))
+    if (!context?.userData || !props?.productId) {
+        return (
+            <div className="text-center py-10 text-gray-500">
+            Đang tải đánh giá sản phẩm...
+            </div>
+        );
+        }
 
-        getReviews();
-    }, [context?.userData, props]);
+    useEffect(() => {
+        if (context?.userData && props?.productId) {
+            setReviews((prev) => ({
+            ...prev,
+            image: context.userData.avatar,
+            userName: context.userData.name,
+            userId: context.userData._id,
+            productId: props.productId,
+            }));
+
+            getReviews();
+        }
+        }, [context?.userData, props?.productId]);
+
 
 
     const onChangeInput = (e) => {

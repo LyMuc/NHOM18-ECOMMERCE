@@ -14,6 +14,14 @@ const CartPage = () => {
   const [productWeightData, setProductWeightData] = useState([]);
   const context = useContext(MyContext);
 
+  if (!context?.userData || !context?.cartData || context.cartData.length === 0) {
+    return (
+      <section className="section py-10 text-center text-gray-500">
+        Đang tải giỏ hàng...
+      </section>
+    );
+  }
+
   useEffect(() => {
 
     window.scrollTo(0, 0)
@@ -120,7 +128,7 @@ const CartPage = () => {
 
             <p className="flex items-center justify-between">
               <span className="text-[14px] font-[500]">Estimate for</span>
-              <span className="font-bold"><span className="font-bold">{context?.userData?.address_details[0]?.country}</span></span>
+              <span className="font-bold">{context.userData.address_details?.[0]?.country || "Unknown"}</span>
             </p>
 
             <p className="flex items-center justify-between">

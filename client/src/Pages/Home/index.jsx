@@ -40,6 +40,10 @@ const Home = () => {
 
 
   const context = useContext(MyContext);
+  
+  if (!context?.userData || !context?.catData || context.catData.length === 0) {
+    return <div className="text-center py-10 text-gray-500">Đang tải trang chủ...</div>;
+  }
 
 
   useEffect(() => {

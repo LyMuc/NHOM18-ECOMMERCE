@@ -24,6 +24,14 @@ const Checkout = () => {
   const [isLoading, setIsloading] = useState(false);
   const context = useContext(MyContext);
 
+  if (!context?.userData || !context?.cartData || context.cartData.length === 0) {
+      return (
+        <section className="p-10 text-center text-gray-500">
+          Đang tải dữ liệu thanh toán...
+        </section>
+      );
+    }
+
   const history = useNavigate();
 
   useEffect(() => {
