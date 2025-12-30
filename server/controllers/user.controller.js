@@ -343,6 +343,14 @@ export async function forgotPasswordController(request, response) {
     try {
         const { email } = request.body
 
+        if (!email || typeof email !== "string" || !email.includes("@")) {
+            return response.status(400).json({
+                message: "Invalid or missing email address",
+                error: true,
+                success: false,
+            });
+        }
+
         // Tìm user theo email
         const user = await UserModel.findOne({ email: email })
 

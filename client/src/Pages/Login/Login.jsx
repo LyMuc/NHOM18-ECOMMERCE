@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { MyContext } from "../../App";
 import CircularProgress from '@mui/material/CircularProgress';
-import { postData } from "../../utils/api";
+import { postData, fetchDataFromApi } from "../../utils/api";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
 
@@ -98,11 +98,13 @@ const Login = () => {
           password: ""
         })
 
-        // Set trạng thái login
-        context.setIsLogin(true);
+        fetchDataFromApi("/api/users/user-details", { withCredentials: true }).then((userRes) => {
+          context.setUserData(userRes.data);
+          context.setIsLogin(true);
 
-        // Chuyển về trang chủ
-        history("/")
+          localStorage.setItem("userEmail", userRes.data.email);
+          history("/"); // chuyển route sau khi context đã sẵn sàng
+        });
       } else {
         context.alertBox("error", res?.message);
         setIsLoading(false);
@@ -112,44 +114,47 @@ const Login = () => {
 
   // Google Login
   const authWithGoogle = () => {
-    signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        const user = result.user;
+  signInWithPopup(auth, googleProvider)
+    .then((result) => {
+      const user = result.user;
 
-        const fields = {
-          name: user.providerData[0].displayName,
-          email: user.providerData[0].email,
-          password: null,
-          avatar: user.providerData[0].photoURL,
-          mobile: user.providerData[0].phoneNumber,
-          role: "USER"
-        };
+      const fields = {
+        name: user.providerData[0].displayName,
+        email: user.providerData[0].email,
+        password: null,
+        avatar: user.providerData[0].photoURL,
+        mobile: user.providerData[0].phoneNumber,
+        role: "USER"
+      };
 
-        postData("/api/users/authWithGoogle", fields).then((res) => {
+      postData("/api/users/authWithGoogle", fields, { withCredentials: true })
+        .then((res) => {
           if (res?.error !== true) {
-            setIsLoading(false);
-            context.alertBox("success", res?.message);
-
-            localStorage.setItem("userEmail", fields.email)
-            
-            context.setIsLogin(true);
-            history("/")
+            fetchDataFromApi("/api/users/user-details", { withCredentials: true }).then((userRes) => {
+              if (userRes?.error === false) {
+                context.setUserData(userRes.data);
+                context.setIsLogin(true);
+                localStorage.setItem("userEmail", userRes.data.email);
+                context.alertBox("success", res?.message);
+                history("/");
+              } else {
+                context.alertBox("error", "Login failed while getting user info.");
+              }
+            });
           } else {
             context.alertBox("error", res?.message);
-            setIsLoading(false);
           }
         })
-
-        console.log(user)
-      }).catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-      });
-  }
+        .catch((err) => {
+          console.error("Login error:", err);
+          context.alertBox("error", "Something went wrong.");
+        });
+    })
+    .catch((error) => {
+      console.error("Google Auth Error:", error);
+      context.alertBox("error", "Google authentication failed.");
+    });
+};
 
   return (
     <section className="section py-5 sm:py-10">
