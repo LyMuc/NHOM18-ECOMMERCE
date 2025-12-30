@@ -1,44 +1,58 @@
-import React from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import { Navigation } from 'swiper/modules';
+import React, { useContext } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import 'swiper/css/free-mode';
+
+import { Navigation, FreeMode } from "swiper/modules";
 import BannerBox from "../BannerBox";
+import { MyContext } from "../../App";
 
 const AdsBannerSlider = (props) => {
-    return(
-        <div className="py-5 w-full">
-            <Swiper
-                slidesPerView={props.items}
-                spaceBetween={10}
-                navigation={true}
-                modules={[Navigation]}
-                className="smlBtn"
-            >
-                <SwiperSlide>
-                    <BannerBox img={"https://serviceapi.spicezgold.com/download/1741663408792_1737020756772_New_Project_1.png"} link={"/"}/>
-                </SwiperSlide>
 
-                 <SwiperSlide>
-                    <BannerBox img={"https://serviceapi.spicezgold.com/download/1741663408792_1737020756772_New_Project_1.png"} link={"/"}/>
-                </SwiperSlide>
+  const context = useContext(MyContext);
 
-                 <SwiperSlide>
-                    <BannerBox img={"https://serviceapi.spicezgold.com/download/1741663408792_1737020756772_New_Project_1.png"} link={"/"}/>
-                </SwiperSlide>
+  return (
+    <div className="py-5 w-full">
+      <Swiper
+        slidesPerView={props.items}
+        spaceBetween={10}
+        navigation={context?.windowWidth < 992 ? false : true}
+        modules={[Navigation, FreeMode]}
+        freeMode={true}
+        breakpoints={{
+          300: {
+            slidesPerView: 1,
+            spaceBetween: 5,
+          },
+          450: {
+            slidesPerView: 2,
+            spaceBetween: 5,
+          },
+          750: {
+            slidesPerView: 3,
+            spaceBetween: 5,
+          },
+          1100: {
+            slidesPerView: 4,
+            spaceBetween: 5,
+          },
+        }}
+        className="smlBtn"
+      >
+        {
+          props?.data?.map((item, index) => {
+            return (
+              <SwiperSlide key={index}>
+                <BannerBox img={item?.images[0]} item={item}/>
+              </SwiperSlide>
+            )
+          })
+        }
 
-                 <SwiperSlide>
-                    <BannerBox img={"https://serviceapi.spicezgold.com/download/1741663408792_1737020756772_New_Project_1.png"} link={"/"}/>
-                </SwiperSlide>
-
-                 <SwiperSlide>
-                    <BannerBox img={"https://serviceapi.spicezgold.com/download/1741663408792_1737020756772_New_Project_1.png"} link={"/"}/>
-                </SwiperSlide>
-
-            </Swiper>
-        </div>
-    )
-}
+      </Swiper>
+    </div>
+  );
+};
 
 export default AdsBannerSlider;
-

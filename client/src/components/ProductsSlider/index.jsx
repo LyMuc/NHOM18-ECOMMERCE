@@ -1,47 +1,60 @@
-import React from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import { Navigation } from 'swiper/modules';
-import {Link} from "react-router-dom";
+import React, { useContext } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import 'swiper/css/free-mode';
+
+import { Navigation, FreeMode } from "swiper/modules";
 import ProductItem from "../ProductItem";
+import { MyContext } from "../../App";
 
 const ProductsSlider = (props) => {
-    return(
-        <div className="productsSlider py-5">
-            <Swiper
-                slidesPerView={props.items}
-                spaceBetween={10}
-                navigation={true}
-                modules={[Navigation]}
-                className="mySwiper"
-            >
-                <SwiperSlide>
-                    <ProductItem />
-                </SwiperSlide>
 
-                <SwiperSlide>
-                    <ProductItem />
-                </SwiperSlide>
+  const context = useContext(MyContext);
 
-                <SwiperSlide>
-                    <ProductItem />
-                </SwiperSlide>
+  return (
+    <div className="productsSlider pt-1 lg:pt-3 pb-0">
+      <Swiper
+        slidesPerView={props.items}
+        spaceBetween={10}
+        slidesPerGroup={4}
+        navigation={context?.windowWidth<992 ? false : true}
+        modules={[Navigation, FreeMode]}
+        freeMode={true}
+        breakpoints={{
+          250: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          330: {
+            slidesPerView: 2,
+            spaceBetween: 10,
+          },
+          500: {
+            slidesPerView: 3,
+            spaceBetween: 10,
+          },
+          1100: {
+            slidesPerView: 6,
+            spaceBetween: 10,
+          },
+        }}
+        className="mySwiper"
+      >
+        {
+          props?.data?.map((item, index) => {
+            return (
+              <SwiperSlide key={index}>
+                <ProductItem item={item} />
+              </SwiperSlide>
+            )
+          })
+        }
 
-                <SwiperSlide>
-                    <ProductItem />
-                </SwiperSlide>
 
-                <SwiperSlide>
-                    <ProductItem />
-                </SwiperSlide>
-
-                <SwiperSlide>
-                    <ProductItem />
-                </SwiperSlide>
-            </Swiper>
-        </div>
-    )
-}
+      </Swiper>
+    </div>
+  );
+};
 
 export default ProductsSlider;
