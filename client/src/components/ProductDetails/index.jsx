@@ -197,10 +197,10 @@ export const ProductDetailsComponent = (props) => {
       <div className="flex flex-col sm:flex-row md:flex-row lg:flex-row items-start sm:items-center gap-4 mt-4">
         <div className="flex items-center gap-4">
           <span className="oldPrice line-through text-gray-500 text-[20px] font-[500]">
-            &#x20b9;{props?.item?.price}
+            ${props?.item?.oldPrice?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
           <span className="price text-primary text-[20px]  font-[600]">
-            &#x20b9;{props?.item?.oldPrice}
+            ${props?.item?.price?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
         </div>
 

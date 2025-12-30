@@ -45,7 +45,7 @@ const CartPanel = (props) => {
                     <span className="text-[13px] sm:text-[14px]">
                       Qty : <span>{item?.quantity}</span>
                     </span>
-                    <span className="text-primary font-bold">{item?.price?.toLocaleString('en-US', { style: 'currency', currency: 'INR' })}</span>
+                    <span className="text-primary font-bold">{item?.price?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</span>
                   </p>
 
                   <MdOutlineDeleteOutline className="absolute top-[10px] right-[10px] cursor-pointer text-[20px] link transition-all" onClick={() => removeItem(item?._id)} />
@@ -72,7 +72,7 @@ const CartPanel = (props) => {
                 (context.cartData?.length !== 0 ?
                   context.cartData?.map(item => parseInt(item.price) * item.quantity)
                     .reduce((total, value) => total + value, 0) : 0)
-                  ?.toLocaleString('en-US', { style: 'currency', currency: 'INR' })
+                  ?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
               }
             </span>
           </div>
@@ -88,7 +88,7 @@ const CartPanel = (props) => {
                 (context.cartData?.length !== 0 ?
                   context.cartData?.map(item => parseInt(item.price) * item.quantity)
                     .reduce((total, value) => total + value, 0) : 0)
-                  ?.toLocaleString('en-US', { style: 'currency', currency: 'INR' })
+                  ?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
               }
             </span>
           </div>

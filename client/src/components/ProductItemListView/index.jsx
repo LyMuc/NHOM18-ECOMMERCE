@@ -213,7 +213,7 @@ const ProductItem = (props) => {
            {
               props?.item?.images?.length > 1 &&
               <img
-                src={`${API_URL}/download/${props?.item?.images[1]}`}
+                src={props?.item?.images[1]}
                 className="w-full transition-all duration-700 absolute top-0 left-0 opacity-0 group-hover:opacity-100 group-hover:scale-105"
               />
             }
@@ -318,10 +318,10 @@ const ProductItem = (props) => {
 
         <div className="flex items-center gap-4">
           <span className="oldPrice line-through text-gray-500 text-[15px] font-[500]">
-          &#x20b9;{props?.item?.oldPrice}
+          ${props?.item?.oldPrice?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
           <span className="price text-primary text-[15px]  font-[600]">
-            &#x20b9;{props?.item?.price}
+            ${props?.item?.price?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
         </div>
 

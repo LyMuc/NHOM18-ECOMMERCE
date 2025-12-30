@@ -241,7 +241,7 @@ const ProductItem = (props) => {
                 return (
                   <span key={index} className={`flex items-center justify-center p-1 px-2 bg-[rgba(255,555,255,0.8)] max-w-[35px] h-[25px]  
           rounded-sm cursor-pointer hover:bg-white 
-          ${activeTab === index && '!bg-primary text-white'}`}
+          ${activeTab === index && '!bg-[#ff5252] text-white'}`}
                     onClick={() => handleClickActiveTab(index, item)}
                   >{item}
                   </span>)
@@ -253,7 +253,7 @@ const ProductItem = (props) => {
                 return (
                   <span key={index} className={`flex items-center justify-center p-1 px-2 bg-[rgba(255,555,255,0.8)] max-w-[45px] h-[25px]  
           rounded-sm cursor-pointer hover:bg-white 
-          ${activeTab === index && '!bg-primary text-white'}`}
+          ${activeTab === index && '!bg-[#ff5252] text-white'}`}
                     onClick={() => handleClickActiveTab(index, item)}
                   >{item}
                   </span>)
@@ -266,7 +266,7 @@ const ProductItem = (props) => {
                 return (
                   <span key={index} className={`flex items-center justify-center p-1 px-2 bg-[rgba(255,555,255,0.8)] max-w-[35px] h-[25px]  
           rounded-sm cursor-pointer hover:bg-white 
-          ${activeTab === index && '!bg-primary text-white'}`}
+          ${activeTab === index && '!bg-[#ff5252] text-white'}`}
                     onClick={() => handleClickActiveTab(index, item)}
                   >{item}
                   </span>)
@@ -277,25 +277,58 @@ const ProductItem = (props) => {
         }
 
 
-        <span className="discount flex items-center absolute top-[10px] left-[10px] z-50 bg-primary text-white rounded-lg p-1 text-[12px] font-[500]">
+        <span className="discount flex items-center absolute top-[10px] left-[10px] z-50 bg-[#ff5252] text-white rounded-lg p-1 text-[12px] font-[500]">
           {props?.item?.discount}%
         </span>
 
         <div className="actions absolute top-[-20px] right-[5px] z-50 flex items-center gap-2 flex-col w-[50px] transition-all duration-300 group-hover:top-[15px] opacity-0 group-hover:opacity-100">
 
-          <Button className="!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-white" onClick={() => context.handleOpenProductDetailsModal(true, props?.item)}>
+          <Button sx={{
+                                width: '35px',
+                                height: '35px',
+                                minWidth: '35px',
+                                borderRadius: '50%',
+                                backgroundColor: 'white',
+                                color: 'black',
+                                '&:hover': {
+                                    backgroundColor: '#ff5252',
+                                    color: 'white'
+                                }
+                            }} onClick={() => context.handleOpenProductDetailsModal(true, props?.item)}>
             <MdZoomOutMap className="text-[18px] text-black" />
           </Button>
 
-          <Button className="!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-white">
+          <Button sx={{
+                                width: '35px',
+                                height: '35px',
+                                minWidth: '35px',
+                                borderRadius: '50%',
+                                backgroundColor: 'white',
+                                color: 'black',
+                                '&:hover': {
+                                    backgroundColor: '#ff5252',
+                                    color: 'white'
+                                }
+                            }}>
             <IoGitCompareOutline className="text-[18px] text-black" />
           </Button>
 
-          <Button className="!w-[35px] !h-[35px] !min-w-[35px] !rounded-full !bg-white"
+          <Button sx={{
+                                width: '35px',
+                                height: '35px',
+                                minWidth: '35px',
+                                borderRadius: '50%',
+                                backgroundColor: 'white',
+                                color: 'black',
+                                '&:hover': {
+                                    backgroundColor: '#ff5252',
+                                    color: 'white'
+                                }
+                            }}
             onClick={() => handleAddToMyList(props?.item)}
           >
             {
-              isAddedInMyList === true ? <IoMdHeart className="text-[18px] text-primary" /> :
+              isAddedInMyList === true ? <IoMdHeart className="text-[18px] text-[#ff5252]" /> :
                 <FaRegHeart className="text-[18px] text-black" />
 
             }
@@ -322,7 +355,7 @@ const ProductItem = (props) => {
           <span className="oldPrice line-through text-gray-500 text-[12px] lg:text-[14px] font-[500]">
             {props?.item?.oldPrice?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
           </span>
-          <span className="price text-primary text-[12px] lg:text-[14px]  font-[600]">
+          <span className="price text-[#ff5252] text-[12px] lg:text-[14px]  font-[600]">
             {props?.item?.price?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
           </span>
         </div>

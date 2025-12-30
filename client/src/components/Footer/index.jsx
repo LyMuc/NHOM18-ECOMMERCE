@@ -37,31 +37,31 @@ const Footer = () => {
         <div className="container">
           <div className="flex items-center justify-center gap-2 py-3 lg:py-8 pb-0 lg:pb-8 px-0 lg:px-5 scrollableBox footerBoxWrap">
             <div className="col flex items-center justify-center flex-col group w-[15%]">
-              <LiaShippingFastSolid className="text-[40px] transition-all duration-300 group-hover:text-primary group-hover:-translate-y-1" />
+              <LiaShippingFastSolid className="text-[40px] transition-all duration-300 group-hover:text-[#ff5252] group-hover:-translate-y-1" />
               <h3 className="text-[16px] font-[600] mt-3">Free Shipping</h3>
               <p className="text-[12px] font-[500]">For all Orders Over $100</p>
             </div>
 
             <div className="col flex items-center justify-center flex-col group w-[15%]">
-              <PiKeyReturnLight className="text-[40px] transition-all duration-300 group-hover:text-primary group-hover:-translate-y-1" />
+              <PiKeyReturnLight className="text-[40px] transition-all duration-300 group-hover:text-[#ff5252] group-hover:-translate-y-1" />
               <h3 className="text-[16px] font-[600] mt-3">30 Days Returns</h3>
               <p className="text-[12px] font-[500]">For an Exchange Product</p>
             </div>
 
             <div className="col flex items-center justify-center flex-col group w-[15%]">
-              <BsWallet2 className="text-[40px] transition-all duration-300 group-hover:text-primary group-hover:-translate-y-1" />
+              <BsWallet2 className="text-[40px] transition-all duration-300 group-hover:text-[#ff5252] group-hover:-translate-y-1" />
               <h3 className="text-[16px] font-[600] mt-3">Secured Payment</h3>
               <p className="text-[12px] font-[500]">Payment Cards Accepted</p>
             </div>
 
             <div className="col flex items-center justify-center flex-col group w-[15%]">
-              <LiaGiftSolid className="text-[40px] transition-all duration-300 group-hover:text-primary group-hover:-translate-y-1" />
+              <LiaGiftSolid className="text-[40px] transition-all duration-300 group-hover:text-[#ff5252] group-hover:-translate-y-1" />
               <h3 className="text-[16px] font-[600] mt-3">Special Gifts</h3>
               <p className="text-[12px] font-[500]">Our First Product Order</p>
             </div>
 
             <div className="col flex items-center justify-center flex-col group w-[15%]">
-              <BiSupport className="text-[40px] transition-all duration-300 group-hover:text-primary group-hover:-translate-y-1" />
+              <BiSupport className="text-[40px] transition-all duration-300 group-hover:text-[#ff5252] group-hover:-translate-y-1" />
               <h3 className="text-[16px] font-[600] mt-3">Support 24/7</h3>
               <p className="text-[12px] font-[500]">Contact us Anytime</p>
             </div>
@@ -86,12 +86,12 @@ const Footer = () => {
                 sales@yourcompany.com
               </Link>
 
-              <span className="text-[22px] font-[600] block w-full mt-3 mb-5 text-primary">
+              <span className="text-[22px] font-[600] block w-full mt-3 mb-5 text-[#ff5252]">
                 (+91) 9876-543-210
               </span>
 
               <div className="flex items-center gap-2">
-                <IoChatboxOutline className="text-[40px] text-primary" />
+                <IoChatboxOutline className="text-[40px] text-[#ff5252]" />
                 <span className="text-[16px] font-[600]">
                   Online Chat
                   <br />
@@ -212,7 +212,7 @@ const Footer = () => {
               <Link
                 to="/"
                 target="_blank"
-                className="w-[35px] h-[35px] rounded-full border border-[rgba(0,0,0,0.1)] flex items-center justify-center group hover:bg-primary transition-all"
+                className="w-[35px] h-[35px] rounded-full border border-[rgba(0,0,0,0.1)] flex items-center justify-center group hover:bg-[#ff5252] transition-all"
               >
                 <FaFacebookF className="text-[17px] group-hover:text-white" />
               </Link>
@@ -222,7 +222,7 @@ const Footer = () => {
               <Link
                 to="/"
                 target="_blank"
-                className="w-[35px] h-[35px] rounded-full border border-[rgba(0,0,0,0.1)] flex items-center justify-center group hover:bg-primary transition-all"
+                className="w-[35px] h-[35px] rounded-full border border-[rgba(0,0,0,0.1)] flex items-center justify-center group hover:bg-[#ff5252] transition-all"
               >
                 <AiOutlineYoutube className="text-[21px] group-hover:text-white" />
               </Link>
@@ -232,7 +232,7 @@ const Footer = () => {
               <Link
                 to="/"
                 target="_blank"
-                className="w-[35px] h-[35px] rounded-full border border-[rgba(0,0,0,0.1)] flex items-center justify-center group hover:bg-primary transition-all"
+                className="w-[35px] h-[35px] rounded-full border border-[rgba(0,0,0,0.1)] flex items-center justify-center group hover:bg-[#ff5252] transition-all"
               >
                 <FaPinterestP className="text-[17px] group-hover:text-white" />
               </Link>
@@ -242,7 +242,7 @@ const Footer = () => {
               <Link
                 to="/"
                 target="_blank"
-                className="w-[35px] h-[35px] rounded-full border border-[rgba(0,0,0,0.1)] flex items-center justify-center group hover:bg-primary transition-all"
+                className="w-[35px] h-[35px] rounded-full border border-[rgba(0,0,0,0.1)] flex items-center justify-center group hover:bg-[#ff5252] transition-all"
               >
                 <FaInstagram className="text-[17px] group-hover:text-white" />
               </Link>

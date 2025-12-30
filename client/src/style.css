@@ -286,25 +286,6 @@ table td{padding: 8px 17px !important; font-size: 13px !important;}
   background-color: #ff5252 !important;
 }
 
-/* ===== Product Item Action Buttons ===== */
-.productItem .actions .MuiButton-root {
-  background-color: #fff !important;
-  transition: all 0.3s ease !important;
-}
-
-.productItem .actions .MuiButton-root svg {
-  color: #000 !important;
-  transition: all 0.3s ease !important;
-}
-
-.productItem .actions .MuiButton-root:hover {
-  background-color: #ff5252 !important;
-}
-
-.productItem .actions .MuiButton-root:hover svg {
-  color: #fff !important;
-}
-
 
 
 
