@@ -8,9 +8,9 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { deleteData, fetchDataFromApi } from '../../utils/api';
 import AddressBox from './addressBox';
-import Drawer from '@mui/material/Drawer';
-import AddAddress from './addAddress';
-import { IoCloseSharp } from "react-icons/io5";
+// import Drawer from '@mui/material/Drawer';
+// import AddAddress from './addAddress';
+// import { IoCloseSharp } from "react-icons/io5";
 
 
 const label = { inputProps: { 'aria-label': 'Radio demo' } };
@@ -89,7 +89,7 @@ const Address = () => {
                 </div>
             </section>
 
-            {/* Address Panel */}
+            {/* Address Panel
       <Drawer
         open={context.openAddressPanel}
         onClose={context.toggleAddressPanel(false)}
@@ -109,7 +109,7 @@ const Address = () => {
 
 
 
-      </Drawer>
+      </Drawer> */}
 
         </>
     )

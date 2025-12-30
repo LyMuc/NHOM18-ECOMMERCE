@@ -1,97 +1,152 @@
-import React, { useState, useMemo } from 'react';
-import "../../style.css";
-import CartItem from "./CartItem";
-import CartSummary from "./CartSummary";
+import React, { useContext, useEffect, useState } from "react";
 
-function Cart() {
-    // Demo data; in real app, load from API or Redux
-    const itemList=[
-        {
-                id: "1",
-                name: "ADRO Men Print Regular Fit Hoodie For Men",
-                price: 31.0,
-                image:
-                    "https://cdn.shopify.com/s/files/1/0682/2102/4660/files/adro-hoodie-blue.png?v=1669211111",
-                color: "Blue",
-                quantity: 1,
-                selected: true,
-            },
+import Button from "@mui/material/Button";
+import { BsFillBagCheckFill } from "react-icons/bs";
+import CartItems from "./cartItems";
+import { MyContext } from "../../App";
+import { fetchDataFromApi } from "../../utils/api";
+import { Link } from "react-router-dom";
+
+const CartPage = () => {
+
+  const [productSizeData, setProductSizeData] = useState([]);
+  const [productRamsData, setProductRamsData] = useState([]);
+  const [productWeightData, setProductWeightData] = useState([]);
+  const context = useContext(MyContext);
+
+  useEffect(() => {
+
+    window.scrollTo(0, 0)
+
+    fetchDataFromApi("/api/product/productSize/get").then((res) => {
+      if (res?.error === false) {
+        setProductSizeData(res?.data)
+      }
+    })
+
+    fetchDataFromApi("/api/product/productRAMS/get").then((res) => {
+      if (res?.error === false) {
+        setProductRamsData(res?.data)
+      }
+    })
+
+    fetchDataFromApi("/api/product/productWeight/get").then((res) => {
+      if (res?.error === false) {
+        setProductWeightData(res?.data)
+      }
+    })
+  }, []);
+
+
+
+
+  const selectedSize = (item) => {
+    if (item?.size !== "") {
+      return item?.size;
+    }
+
+    if (item?.weight !== "") {
+      return item?.weight;
+    }
+
+    if (item?.ram !== "") {
+      return item?.ram;
+    }
+
+  }
+
+
+  return (
+    <section className="section py-4 lg:py-8 pb-10">
+      <div className="container w-[80%] max-w-[80%] flex gap-5 flex-col lg:flex-row">
+        <div className="leftPart w-full lg:w-[70%]">
+          <div className="shadow-md rounded-md bg-white">
+            <div className="py-5 px-3 border-b border-[rgba(0,0,0,0.1)]">
+              <h2>Your Cart</h2>
+              <p className="mt-0 mb-0">
+                There are <span className="font-bold text-primary">{context?.cartData?.length}</span>{" "}
+                products in your cart
+              </p>
+            </div>
+
             {
-                id: "2",
-                name: "Evans Lichfield Sunningdale Velvet Pillow",
-                price: 35.0,
-                image:
-                    "https://images.unsplash.com/photo-1582582494700-45236c2f3a58?q=80&w=600&auto=format&fit=crop",
-                color: "Yellow",
-                quantity: 1,
-                selected: true,
-            },
-            {
-                id: "3",
-                name: "Nike Air Max 270 React ENG",
-                price: 150.0,
-                image:
-                    "https://cdn.shopify.com/s/files/1/0682/2102/4660/files/adro-hoodie-blue.png?v=1669211111",
-                color: "Black",
-                quantity: 1,
-                selected: true,
-            }
-    ];
-        const [items, setItems] = useState(itemList);
 
-    const toggleItem = (id, selected) => {
-        setItems((prev) => prev.map((it) => (it.id === id ? { ...it, selected } : it)));
-    };
+              context?.cartData?.length !== 0 ? context?.cartData?.map((item, index) => {
+                return (
+                  <CartItems selected={() => selectedSize(item)} qty={item?.quantity} item={item} key={index} productSizeData={productSizeData} productRamsData={productRamsData} productWeightData={productWeightData} />
+                )
+              })
 
-    const changeQty = (id, qty) => {
-        setItems((prev) => prev.map((it) => (it.id === id ? { ...it, quantity: qty } : it)));
-    };
+                :
 
-    const removeItem = (id) => {
-        setItems((prev) => prev.filter((it) => it.id !== id));
-    };
 
-        const { total, count } = useMemo(() => {
-            const filtered = items.filter((it) => it.selected);
-            const totalNum = filtered.reduce((sum, it) => sum + it.price * it.quantity, 0);
-            const countNum = filtered.reduce((sum, it) => sum + it.quantity, 0);
-            return { total: totalNum.toFixed(2), count: countNum };
-        }, [items]);
 
-    return (
-            <>
-                <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
-                    <h1 className="py-6 font-bold text-3xl text-left">Cart</h1>
-
-                    <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-start">
-                        {/* Left: items card */}
-                        <div className="border rounded-lg bg-white overflow-hidden">
-                            <div className="px-4 py-3 border-b font-semibold">Shopping Cart</div>
-                            <div className="p-4 space-y-3">
-                                {items.length === 0 ? (
-                                    <div className="p-6 text-gray-600">Your cart is empty.</div>
-                                ) : (
-                                    items.map((it) => (
-                                        <CartItem
-                                            key={it.id}
-                                            item={it}
-                                            onToggle={toggleItem}
-                                            onQuantityChange={changeQty}
-                                            onRemove={removeItem}
-                                        />
-                                    ))
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Right: summary */}
-                        <CartSummary count={count} total={Number(total)} />
+                <>
+                  <>
+                    <div className="flex items-center justify-center flex-col py-10 gap-5">
+                      <img src="/empty-cart.png" className="w-[150px]" />
+                      <h4>Your Cart is currently empty</h4>
+                      <Link to="/"><Button className="btn-org">Continue Shopping</Button></Link>
                     </div>
+                  </>
 
-                    <div className="mt-4 text-sm text-gray-600">&larr; Continue shopping</div>
-                </div>
-            </>
-    );
-}
+                </>
+            }
 
-export default Cart;
+          </div>
+        </div>
+
+        <div className="rightPart w-full lg:w-[30%]">
+          <div className="shadow-md rounded-md bg-white p-5 sticky top-[155px] z-[90]">
+            <h3 className="pb-3">Cart Totals</h3>
+            <hr />
+
+            <p className="flex items-center justify-between">
+              <span className="text-[14px] font-[500]">Subtotal</span>
+              <span className="text-primary font-bold">
+                {
+                  (context.cartData?.length !== 0 ?
+                    context.cartData?.map(item => parseInt(item.price) * item.quantity)
+                      .reduce((total, value) => total + value, 0) : 0)
+                    ?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                }
+              </span>
+            </p>
+
+            <p className="flex items-center justify-between">
+              <span className="text-[14px] font-[500]">Shipping</span>
+              <span className="font-bold">Free</span>
+            </p>
+
+            <p className="flex items-center justify-between">
+              <span className="text-[14px] font-[500]">Estimate for</span>
+              <span className="font-bold"><span className="font-bold">{context?.userData?.address_details[0]?.country}</span></span>
+            </p>
+
+            <p className="flex items-center justify-between">
+              <span className="text-[14px] font-[500]">Total</span>
+              <span className="text-primary font-bold">
+                {
+                  (context.cartData?.length !== 0 ?
+                    context.cartData?.map(item => parseInt(item.price) * item.quantity)
+                      .reduce((total, value) => total + value, 0) : 0)
+                    ?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                }
+              </span>
+            </p>
+
+            <br />
+
+            <Link to="/checkout">
+              <Button className="btn-org btn-lg w-full flex gap-2">
+                <BsFillBagCheckFill className="text-[20px]" /> Checkout
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default CartPage;
