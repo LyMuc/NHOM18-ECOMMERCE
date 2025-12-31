@@ -182,6 +182,18 @@ nav ul button:hover{
 .swiper-button-prev:hover,.swiper-button-next:hover{background: #ff5252 !important;}
 .swiper-button-prev:hover::after,.swiper-button-next:hover::after{color: #fff !important;}
 
+/* ===== Home (first banner) slider overrides ===== */
+/* Prevent global hover styles from turning arrows red on the first Home banner */
+.sliderHome .swiper-button-prev:hover,
+.sliderHome .swiper-button-next:hover{
+    background: transparent !important;
+}
+
+.sliderHome .swiper-button-prev:hover::after,
+.sliderHome .swiper-button-next:hover::after{
+    color: #0066ff !important;
+}
+
 /* ===== Home Category Slider ===== */
 .homeCatSlider{overflow: inherit !important;}
 .homeCatSlider .swiper-button-prev,.homeCatSlider .swiper-button-next{width: 30px; height: 30px;  min-width: 30px;}

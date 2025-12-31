@@ -32,6 +32,20 @@ const AddressBox = (props) => {
         context?.setAddressId(id);
     }
 
+    const formatAddress = (address) => {
+        if (!address) return "";
+        return [
+            address?.address_line1,
+            address?.city,
+            address?.country,
+            address?.state,
+            address?.pincode,
+        ]
+            .map((value) => (value ?? "").toString().trim())
+            .filter(Boolean)
+            .join(", ");
+    };
+
     return (
         <div className='group relative border border-dashed border-[rgba(0,0,0,0.2)] addressBox w-full  bg-[#fafafa] p-4 rounded-md cursor-pointer'>
 
@@ -43,13 +57,7 @@ const AddressBox = (props) => {
             </h4>
 
             <span className="pt-0 text-[13px] block w-100">
-                {
-                    props?.address?.address_line1 + " " +
-                    props?.address?.city + " " +
-                    props?.address?.country + " " +
-                    props?.address?.state + " " +
-                    props?.address?.pincode
-                }
+                {formatAddress(props?.address)}
             </span>
 
 
