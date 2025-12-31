@@ -93,10 +93,6 @@ const Login = () => {
         setIsLoading(false);
         context.alertBox("success", res?.message);
 
-        // Persist tokens (server also sets cookies)
-        if (res?.data?.accesstoken) localStorage.setItem("accessToken", res.data.accesstoken);
-        if (res?.data?.refreshToken) localStorage.setItem("refreshToken", res.data.refreshToken);
-        
         setFormsFields({
           email: "",
           password: ""
@@ -141,10 +137,6 @@ const Login = () => {
 
             localStorage.setItem("userEmail", fields.email)
 
-            // Persist tokens (server also sets cookies)
-            if (res?.data?.accesstoken) localStorage.setItem("accessToken", res.data.accesstoken);
-            if (res?.data?.refreshToken) localStorage.setItem("refreshToken", res.data.refreshToken);
-            
             context.setIsLogin(true);
 
             // Fetch user profile so Header updates immediately

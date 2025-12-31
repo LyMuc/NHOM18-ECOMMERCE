@@ -6,8 +6,6 @@ import { Collapse } from "react-collapse";
 import { FaAngleDown } from "react-icons/fa6";
 import Button from "@mui/material/Button";
 import { FaAngleUp } from "react-icons/fa6";
-import RangeSlider from "react-range-slider-input";
-import "react-range-slider-input/dist/style.css";
 import Rating from "@mui/material/Rating";
 import { MyContext } from "../../App";
 import { useLocation } from "react-router-dom";
@@ -31,11 +29,20 @@ export const Sidebar = (props) => {
 
 
 
-  const [price, setPrice] = useState([0, 60000]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState('any');
 
   const context = useContext(MyContext);
 
   const location = useLocation();
+
+  const priceRanges = [
+    { key: 'any', label: 'All prices', min: '', max: '' },
+    { key: 'under50', label: 'Under $50', min: 0, max: 50 },
+    { key: '50-150', label: '$50 - $150', min: 50, max: 150 },
+    { key: '150-400', label: '$150 - $400', min: 150, max: 400 },
+    { key: '400-800', label: '$400 - $800', min: 400, max: 800 },
+    { key: 'over800', label: 'Over $800', min: 800, max: '' }
+  ];
 
 
   const handleCheckboxChange = (field, value) => {
@@ -149,10 +156,10 @@ export const Sidebar = (props) => {
   useEffect(() => {
     setFilters((prev) => ({
       ...prev,
-      minPrice: price[0],
-      maxPrice: price[1]
+      minPrice: selectedPriceRange === 'any' ? '' : priceRanges.find((p) => p.key === selectedPriceRange)?.min,
+      maxPrice: selectedPriceRange === 'any' ? '' : priceRanges.find((p) => p.key === selectedPriceRange)?.max
     }))
-  }, [price]);
+  }, [selectedPriceRange]);
 
 
   return (
@@ -197,20 +204,19 @@ export const Sidebar = (props) => {
             Filter By Price
           </h3>
 
-          <RangeSlider
-            value={price}
-            onInput={setPrice}
-            min={0}
-            max={60000}
-            setp={5}
-          />
-          <div className="flex pt-4 pb-2 priceRange">
-            <span className="text-[13px]">
-              From: <strong className="text-dark">Rs: {price[0]}</strong>
-            </span>
-            <span className="ml-auto text-[13px]">
-              From: <strong className="text-dark">Rs: {price[1]}</strong>
-            </span>
+          <div className="flex flex-col gap-2 pl-2 priceRange">
+            {priceRanges.map((range) => (
+              <label key={range.key} className="flex items-center gap-2 cursor-pointer text-[14px]">
+                <input
+                  type="radio"
+                  name="price-range"
+                  className="accent-[#000] w-[16px] h-[16px]"
+                  checked={selectedPriceRange === range.key}
+                  onChange={() => setSelectedPriceRange(range.key)}
+                />
+                <span>{range.label}</span>
+              </label>
+            ))}
           </div>
         </div>
 
