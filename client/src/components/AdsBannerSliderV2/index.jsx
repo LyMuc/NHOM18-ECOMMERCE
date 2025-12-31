@@ -46,7 +46,13 @@ const AdsBannerSlider = (props) => {
           props?.data?.map((item, index) => {
             return (
               <SwiperSlide key={index}>
-                <BannerBoxV2 info={item?.alignInfo} item={item} image={item?.images[0]} link={"/"} />
+                <BannerBoxV2
+                  info={item?.alignInfo}
+                  item={item}
+                  image={item?.images[0]}
+                  link={"/"}
+                  hideInfo
+                />
               </SwiperSlide>
             )
           })
