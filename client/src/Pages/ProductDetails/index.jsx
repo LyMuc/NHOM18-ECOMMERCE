@@ -143,10 +143,8 @@ export const ProductDetails = () => {
                 </div>
 
                 {activeTab === 0 && (
-                  <div className="shadow-md w-full py-5 px-8 rounded-md text-[14px]">
-                    {
-                      productData?.description
-                    }
+                  <div className="shadow-md w-full py-5 px-8 rounded-md text-[14px]" style={{ whiteSpace: 'pre-line' }}>
+                    {productData?.description}
                   </div>
                 )}
 

@@ -214,7 +214,7 @@ export const ProductDetailsComponent = (props) => {
         </div>
       </div>
 
-      <p className="mt-3 pr-10 mb-5">
+      <p className="mt-3 pr-10 mb-5" style={{ whiteSpace: 'pre-line' }}>
         {props?.item?.description}
       </p>
 

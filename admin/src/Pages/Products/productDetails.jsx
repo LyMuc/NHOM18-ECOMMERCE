@@ -234,7 +234,11 @@ const ProductDetails = () => {
 
                                 <h2 className="text-[20px] font-[500] mb-3">Product Description</h2>
                                 {
-                                    product?.description && <p className="text-[14px] ">{product?.description}</p>
+                                    product?.description && (
+                                        <p className="text-[14px] " style={{ whiteSpace: 'pre-line' }}>
+                                            {product?.description}
+                                        </p>
+                                    )
                                 }
 
 

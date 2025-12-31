@@ -200,7 +200,7 @@ export const Sidebar = (props) => {
           <RangeSlider
             value={price}
             onInput={setPrice}
-            min={100}
+            min={0}
             max={60000}
             setp={5}
           />
