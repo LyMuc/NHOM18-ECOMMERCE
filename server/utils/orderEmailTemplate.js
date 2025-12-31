@@ -2,7 +2,7 @@ const OrderConfirmationEmail = (username, orders) => {
     return `<!DOCTYPE html>
 <html>
 <head>
-    <title>Order Confirmation</title>
+    <title>Nhom18-Ecommerce Order Confirmation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -74,7 +74,7 @@ const OrderConfirmationEmail = (username, orders) => {
                 <td>${product?.quantity}</td>
                         <td>${product?.subTotal?.toLocaleString("en-US", {
             style: "currency",
-            currency: "INR",
+            currency: "USD",
         })}</td>
         </tr>
                     `
@@ -95,7 +95,7 @@ const OrderConfirmationEmail = (username, orders) => {
             : 0
         )?.toLocaleString("en-US", {
             style: "currency",
-            currency: "INR",
+            currency: "USD",
         })}
                         </td>
                     </tr>    
@@ -107,7 +107,7 @@ const OrderConfirmationEmail = (username, orders) => {
             <p>If you have any questions, feel free to contact us.</p>
         </div >
     <div class="footer">
-        &copy; ${new Date().getFullYear()} Your Store. All rights reserved.
+        &copy; ${new Date().getFullYear()} Nhom18-Ecommerce. All rights reserved.
     </div>
     </div >
 </body >

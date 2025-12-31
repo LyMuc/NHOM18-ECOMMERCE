@@ -49,7 +49,7 @@ export const createOrderController = async (request, response) => {
 
         // Send verification email
         await sendEmailFunction({
-            sendTo: recipients,
+            to: recipients,
             subject: "Order Confirmation",
             text: "",
             html: OrderConfirmationEmail(user?.name, order)
@@ -237,7 +237,7 @@ export const captureOrderPaypalController = async (request, response) => {
 
         // Send verification email
         await sendEmailFunction({
-            sendTo: recipients,
+            to: recipients,
             subject: "Order Confirmation",
             text: "",
             html: OrderConfirmationEmail(user?.name, order)
