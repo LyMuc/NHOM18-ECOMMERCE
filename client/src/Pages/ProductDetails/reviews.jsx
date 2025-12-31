@@ -48,7 +48,7 @@ export const Reviews = (props) => {
 
         if (reviews?.review !== "") {
             setLoading(true);
-            postData("/api/user/addReview", reviews).then((res) => {
+            postData("/api/users/addReview", reviews).then((res) => {
                 if (res?.error === false) {
                     context.alertBox("success", res?.message);
                     setReviews(() => ({
@@ -75,7 +75,7 @@ export const Reviews = (props) => {
 
 
     const getReviews = () => {
-        fetchDataFromApi(`/api/user/getReviews?productId=${props?.productId}`).then((res) => {
+        fetchDataFromApi(`/api/users/getReviews?productId=${props?.productId}`).then((res) => {
             if (res?.error === false) {
                 setReviewsData(res.reviews)
                 props.setReviewsCount(res.reviews.length)

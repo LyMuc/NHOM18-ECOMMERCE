@@ -791,3 +791,249 @@ export async function removeImageFromCloudinary(request, response) {
     }
 
 }
+
+//refresh token controler
+export async function refreshToken(request, response) {
+    try {
+        const refreshToken = request.cookies.refreshToken || request?.headers?.authorization?.split(" ")[1]  /// [ Bearer token]
+
+        if (!refreshToken) {
+            return response.status(401).json({
+                message: "Invalid token",
+                error: true,
+                success: false
+            })
+        }
+
+
+        const verifyToken = await jwt.verify(refreshToken, process.env.SECRET_KEY_REFRESH_TOKEN)
+        if (!verifyToken) {
+            return response.status(401).json({
+                message: "token is expired",
+                error: true,
+                success: false
+            })
+        }
+
+        const userId = verifyToken?._id;
+        const newAccessToken = await generatedAccessToken(userId)
+
+        const cookiesOption = {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+        }
+
+        response.cookie('accessToken', newAccessToken, cookiesOption)
+
+        return response.json({
+            message: "New Access token generated",
+            error: false,
+            success: true,
+            data: {
+                accessToken: newAccessToken
+            }
+        })
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+//review controller
+export async function addReview(request, response) {
+    try {
+
+        const {image, userName, review, rating, userId, productId} = request.body;
+
+        const userReview = new ReviewModel({
+            image:image,
+            userName:userName,
+            review:review,
+            rating:rating,
+            userId:userId,
+            productId:productId
+        })
+
+
+        await userReview.save();
+
+        return response.json({
+            message: "Review added successfully",
+            error: false,
+            success: true
+        })
+        
+    } catch (error) {
+        return response.status(500).json({
+            message: "Something is wrong",
+            error: true,
+            success: false
+        })
+    }
+}
+
+//get reviews
+export async function getReviews(request, response) {
+    try {
+
+        const productId = request.query.productId;
+       
+
+        const reviews = await ReviewModel.find({productId:productId});
+        console.log(reviews)
+
+        if(!reviews){
+            return response.status(400).json({
+                error: true,
+                success: false
+            })
+        }
+
+        return response.status(200).json({
+            error: false,
+            success: true,
+            reviews:reviews
+        })
+        
+    } catch (error) {
+        return response.status(500).json({
+            message: "Something is wrong",
+            error: true,
+            success: false
+        })
+    }
+}
+
+
+
+
+//get all reviews
+export async function getAllReviews(request, response) {
+    try {      
+
+        const reviews = await ReviewModel.find();
+
+        if(!reviews){
+            return response.status(400).json({
+                error: true,
+                success: false
+            })
+        }
+
+        return response.status(200).json({
+            error: false,
+            success: true,
+            reviews:reviews
+        })
+        
+    } catch (error) {
+        return response.status(500).json({
+            message: "Something is wrong",
+            error: true,
+            success: false
+        })
+    }
+}
+
+
+//get all users
+export async function getAllUsers(request, response) {
+    try {
+        const { page, limit } = request.query;
+
+        const totalUsers = await UserModel.find();
+
+        const users = await UserModel.find().sort({ createdAt: -1 }).skip((page - 1) * limit).limit(parseInt(limit));
+
+        const total = await UserModel.countDocuments(users);
+
+        if(!users){
+            return response.status(400).json({
+                error: true,
+                success: false
+            })
+        }
+
+        return response.status(200).json({
+            error: false,
+            success: true,
+            users:users,
+            total: total,
+            page: parseInt(page),
+            totalPages: Math.ceil(total / limit),
+            totalUsersCount:totalUsers?.length,
+            totalUsers:totalUsers
+        })
+        
+    } catch (error) {
+        return response.status(500).json({
+            message: "Something is wrong",
+            error: true,
+            success: false
+        })
+    }
+}
+
+
+
+export async function deleteUser(request, response) {
+    const user = await UserModel.findById(request.params.id);
+
+    if (!user) {
+        return response.status(404).json({
+            message: "User Not found",
+            error: true,
+            success: false
+        })
+    }
+
+
+    const deletedUser = await UserModel.findByIdAndDelete(request.params.id);
+
+    if (!deletedUser) {
+        response.status(404).json({
+            message: "User not deleted!",
+            success: false,
+            error: true
+        });
+    }
+
+    return response.status(200).json({
+        success: true,
+        error: false,
+        message: "User Deleted!",
+    });
+}
+
+
+//delete multiple products
+export async function deleteMultiple(request, response) {
+    const { ids } = request.body;
+
+    if (!ids || !Array.isArray(ids)) {
+        return response.status(400).json({ error: true, success: false, message: 'Invalid input' });
+    }
+
+
+    try {
+        await UserModel.deleteMany({ _id: { $in: ids } });
+        return response.status(200).json({
+            message: "Users delete successfully",
+            error: false,
+            success: true
+        })
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+
+}
