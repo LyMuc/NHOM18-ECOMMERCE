@@ -10,6 +10,9 @@ import { Collapse } from "react-collapse";
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 import { useLayoutEffect } from "react";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 const MyAccount = () => {
 
@@ -17,6 +20,7 @@ const MyAccount = () => {
   const [isLoading2, setIsLoading2] = useState(false);
   const [userId, setUserId] = useState("");
   const [isChangePasswordFormShow, setisChangePasswordFormShow] = useState(false);
+  const [isChangePasswordShow, setIsChangePasswordShow] = useState(false);
   const [phone, setPhone] = useState('');
 
   const [formFields, setFormsFields] = useState({
@@ -58,32 +62,28 @@ const MyAccount = () => {
       const ph = `"${context?.userData?.mobile}"`
       setPhone(ph)
 
-      setChangePassword({
+      setChangePassword((prev) => ({
+        ...prev,
         email: context?.userData?.email
-      })
+      }))
     }
 
   }, [context?.userData])
 
-
-
-  const onChangeInput = (e) => {
+  const onChangeProfileInput = (e) => {
     const { name, value } = e.target;
-    setFormsFields(() => {
-      return {
-        ...formFields,
-        [name]: value
-      }
-    })
+    setFormsFields((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  }
 
-    setChangePassword(() => {
-      return {
-        ...formFields,
-        [name]: value
-      }
-    })
-
-
+  const onChangePasswordInput = (e) => {
+    const { name, value } = e.target;
+    setChangePassword((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   }
 
 
@@ -200,7 +200,7 @@ const MyAccount = () => {
                     name="name"
                     value={formFields.name}
                     disabled={isLoading === true ? true : false}
-                    onChange={onChangeInput}
+                    onChange={onChangeProfileInput}
                   />
                 </div>
 
@@ -214,7 +214,7 @@ const MyAccount = () => {
                     name="email"
                     value={formFields.email}
                     disabled={true}
-                    onChange={onChangeInput}
+                    onChange={onChangeProfileInput}
                   />
                 </div>
 
@@ -227,9 +227,10 @@ const MyAccount = () => {
                     disabled={isLoading === true ? true : false}
                     onChange={(phone) => {
                       setPhone(phone);
-                      setFormsFields({
+                      setFormsFields((prev) => ({
+                        ...prev,
                         mobile: phone
-                      })
+                      }))
                     }}
                   />
 
@@ -279,7 +280,23 @@ const MyAccount = () => {
                         name="oldPassword"
                         value={changePassword.oldPassword}
                         disabled={isLoading2 === true ? true : false}
-                        onChange={onChangeInput}
+                        onChange={onChangePasswordInput}
+                        type={isChangePasswordShow ? "text" : "password"}
+                        slotProps={{
+                          input: {
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={() => setIsChangePasswordShow((prev) => !prev)}
+                                  edge="end"
+                                  tabIndex={-1}
+                                >
+                                  {isChangePasswordShow ? <IoMdEyeOff /> : <IoMdEye />}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          },
+                        }}
                       />
                     </div>
                   }
@@ -288,26 +305,57 @@ const MyAccount = () => {
 
                   <div className="col">
                     <TextField
-                      type="text"
+                      type={isChangePasswordShow ? "text" : "password"}
                       label="New Password"
                       variant="outlined"
                       size="small"
                       className="w-full"
                       name="newPassword"
                       value={changePassword.newPassword}
-                      onChange={onChangeInput}
+                      onChange={onChangePasswordInput}
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => setIsChangePasswordShow((prev) => !prev)}
+                                edge="end"
+                                tabIndex={-1}
+                              >
+                                {isChangePasswordShow ? <IoMdEyeOff /> : <IoMdEye />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        },
+                      }}
                     />
                   </div>
 
                   <div className="col">
                     <TextField
+                      type={isChangePasswordShow ? "text" : "password"}
                       label="Confirm Password"
                       variant="outlined"
                       size="small"
                       className="w-full"
                       name="confirmPassword"
                       value={changePassword.confirmPassword}
-                      onChange={onChangeInput}
+                      onChange={onChangePasswordInput}
+                      slotProps={{
+                        input: {
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => setIsChangePasswordShow((prev) => !prev)}
+                                edge="end"
+                                tabIndex={-1}
+                              >
+                                {isChangePasswordShow ? <IoMdEyeOff /> : <IoMdEye />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        },
+                      }}
                     />
                   </div>
 
