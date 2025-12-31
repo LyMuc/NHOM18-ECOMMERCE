@@ -32,7 +32,7 @@ const HomeSlider = (props) => {
                     <img
                       src={item?.images[0]}
                       alt="Banner slide"
-                      className="w-full"
+                      className="w-full h-[200px] sm:h-[260px] md:h-[340px] lg:h-[420px] object-cover block"
                     />
                   </div>
                 </SwiperSlide>
