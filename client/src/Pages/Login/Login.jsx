@@ -92,6 +92,10 @@ const Login = () => {
       if (res?.error !== true) {
         setIsLoading(false);
         context.alertBox("success", res?.message);
+
+        // Persist tokens (server also sets cookies)
+        if (res?.data?.accesstoken) localStorage.setItem("accessToken", res.data.accesstoken);
+        if (res?.data?.refreshToken) localStorage.setItem("refreshToken", res.data.refreshToken);
         
         setFormsFields({
           email: "",
@@ -100,6 +104,9 @@ const Login = () => {
 
         // Set trạng thái login
         context.setIsLogin(true);
+
+        // Fetch user profile so Header updates immediately
+        context?.getUserDetails?.();
 
         // Chuyển về trang chủ
         history("/")
@@ -133,8 +140,15 @@ const Login = () => {
             context.alertBox("success", res?.message);
 
             localStorage.setItem("userEmail", fields.email)
+
+            // Persist tokens (server also sets cookies)
+            if (res?.data?.accesstoken) localStorage.setItem("accessToken", res.data.accesstoken);
+            if (res?.data?.refreshToken) localStorage.setItem("refreshToken", res.data.refreshToken);
             
             context.setIsLogin(true);
+
+            // Fetch user profile so Header updates immediately
+            context?.getUserDetails?.();
             history("/")
           } else {
             context.alertBox("error", res?.message);
