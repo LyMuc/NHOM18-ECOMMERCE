@@ -11,3 +11,6 @@ logs/
 **/.env
 client/.env
 server/.env
+
+# Ignore root package lock if you prefer lockfiles per-package
+package-lock.json

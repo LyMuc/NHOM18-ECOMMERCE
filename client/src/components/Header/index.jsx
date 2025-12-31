@@ -37,6 +37,8 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
+  const [avatarError, setAvatarError] = useState(false);
+
   const [isOpenCatPanel, setIsOpenCatPanel] = useState(false);
 
   const context = useContext(MyContext);
@@ -52,6 +54,10 @@ const Header = () => {
 
 
   const location = useLocation();
+
+  useEffect(() => {
+    setAvatarError(false);
+  }, [context?.userData?.avatar]);
 
   useEffect(() => {
 
@@ -172,8 +178,17 @@ const Header = () => {
                           className="!text-[#000] myAccountWrap flex items-center gap-3 cursor-pointer"
                           onClick={handleClick}
                         >
-                          <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-200">
-                            <FaRegUser className="text-[17px] text-[rgba(0,0,0,0.7)]" />
+                          <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-200 !p-0 overflow-hidden">
+                            {context?.userData?.avatar && context?.userData?.avatar !== "" && avatarError === false ? (
+                              <img
+                                src={context?.userData?.avatar}
+                                alt={context?.userData?.name ? `${context.userData.name} avatar` : "User avatar"}
+                                className="w-full h-full object-cover"
+                                onError={() => setAvatarError(true)}
+                              />
+                            ) : (
+                              <FaRegUser className="text-[17px] text-[rgba(0,0,0,0.7)]" />
+                            )}
                           </Button>
 
                           {
