@@ -1,7 +1,7 @@
 import axios from 'axios';
 const apiUrl = import.meta.env.VITE_API_URL
 
-export const postData = async (url, formData) => {
+export const postData = async (url, formData)   => {
     try {
         
         const response = await axios.post(apiUrl + url, 
@@ -47,22 +47,19 @@ export const getData = async (url) => {
 }
 
 export const fetchDataFromApi = async (url) => {
-    try {
-        const params = {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            withCredentials: true, // Gửi cookie cùng request
-        } 
-
-        const { data } = await axios.get(apiUrl + url, params)
-        return data;
-    } catch (error) {
-        console.log(error);
-        return error;
-    }
-}
-
+  try {
+    const { data } = await axios.get(apiUrl + url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true // Phải nằm ở cấp ngoài
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
 
 export const uploadImage = async (url, updatedData ) => {
     const params = {

@@ -22,6 +22,7 @@ import { fetchDataFromApi } from "../../utils/api";
 import { LuMapPin } from "react-icons/lu";
 import { useEffect } from "react";
 import { HiOutlineMenu } from "react-icons/hi";
+import { postData } from "../../utils/api";
 
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -60,24 +61,32 @@ const Header = () => {
     })
   }, [context?.isLogin]);
 
-  const logout = () => {
-    setAnchorEl(null);
+    const logout = async () => {
+      setAnchorEl(null); 
 
-    fetchDataFromApi(`/api/user/logout?token=${localStorage.getItem('accessToken')}`, { withCredentials: true }).then((res) => {
-      if (res?.error === false) {
-        context.setIsLogin(false);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        context.setUserData(null);
-        context?.setCartData([]);
-        context?.setMyListData([]);
-        history("/");
+      try {
+        const res = await postData("/api/users/logout", {});
+
+        if (res?.error === false) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+
+          context.setIsLogin(false);
+          context.setUserData(null);
+          context.setCartData([]);
+          context.setMyListData([]);
+
+          context.alertBox("success", "Logout successfully");
+
+          history("/");
+        } else {
+          context.alertBox("error", "Logout failed");
+        }
+      } catch (err) {
+        console.error("Logout error:", err);
+        context.alertBox("error", "An error occurred during logout");
       }
-
-
-    })
-
-  }
+    };
 
   return (
     <>
