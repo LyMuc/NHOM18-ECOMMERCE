@@ -17,6 +17,7 @@ import Checkout from "./Pages/Checkout";
 import MyAccount from "./Pages/MyAccount";
 import MyList from "./Pages/MyList";
 import Orders from "./Pages/Orders";
+import OrderTracking from "./Pages/OrderTracking";
 
 import AboutUs from "./Pages/AboutUs/AboutUs.jsx";
 import Address from "./Pages/MyAccount/address";
@@ -289,6 +290,7 @@ function App() {
             <Route path={"/checkout"} exact={true} element={<Checkout />} />
             <Route path={"/my-list"} exact={true} element={<MyList />} />
             <Route path={"/my-orders"} exact={true} element={<Orders />} />
+            <Route path={"/order-tracking"} exact={true} element={<OrderTracking />} />
             <Route path={"/order/success"} exact={true} element={<OrderSuccess />} />
             <Route path={"/order/failed"} exact={true} element={<OrderFailed />} />
             <Route path={"/search"} exact={true} element={<SearchPage />} />

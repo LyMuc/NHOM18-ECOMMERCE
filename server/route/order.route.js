@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { auth } from "../middleware/auth.js";
-import {  captureOrderPaypalController, createOrderController, createOrderPaypalController, deleteOrder, getOrderDetailsController, getTotalOrdersCountController, getUserOrderDetailsController, totalSalesController, totalUsersController, updateOrderStatusController } from "../controllers/order.controller.js";
+import {  captureOrderPaypalController, createOrderController, createOrderPaypalController, deleteOrder, getOrderDetailsController, getTotalOrdersCountController, getUserOrderDetailsController, totalSalesController, totalUsersController, updateOrderStatusController, trackOrderByIdController } from "../controllers/order.controller.js";
 
 const orderRouter = Router();
 
@@ -14,5 +14,6 @@ orderRouter.get('/sales',auth,totalSalesController)
 orderRouter.get('/users',auth,totalUsersController)
 orderRouter.get('/order-list/orders',auth,getUserOrderDetailsController)
 orderRouter.delete('/deleteOrder/:id',auth,deleteOrder)
+orderRouter.get('/track/:orderId',trackOrderByIdController)
 
 export default orderRouter;

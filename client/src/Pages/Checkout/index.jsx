@@ -9,9 +9,6 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 
-const VITE_APP_RAZORPAY_KEY_ID = import.meta.env.VITE_APP_RAZORPAY_KEY_ID;
-const VITE_APP_RAZORPAY_KEY_SECRET = import.meta.env.VITE_APP_RAZORPAY_KEY_SECRET;
-
 const VITE_APP_PAYPAL_CLIENT_ID = import.meta.env.VITE_APP_PAYPAL_CLIENT_ID;
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -57,7 +54,7 @@ const Checkout = () => {
 
     // Load the PayPal JavaScript SDK
     const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${VITE_APP_PAYPAL_CLIENT_ID}&disable-funding=card`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${VITE_APP_PAYPAL_CLIENT_ID}&currency=USD&disable-funding=card`;
     script.async = true;
     script.onload = () => {
       window.paypal
@@ -65,33 +62,15 @@ const Checkout = () => {
           {
             createOrder: async () => {
 
-              // Create order on the server
-
-              const resp = await fetch(
-                "https://v6.exchangerate-api.com/v6/8f85eea95dae9336b9ea3ce9/latest/INR"
-              );
-
-              const respData = await resp.json();
-              var convertedAmount = 0;
-
-              if (respData.result === "success") {
-                const usdToInrRate = respData.conversion_rates.USD;
-                convertedAmount = (totalAmount * usdToInrRate).toFixed(2);
-              }
-
-              const headers = {
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Include your API key in the Authorization header
-                'Content-Type': 'application/json', // Adjust the content type as needed
-              }
-
+              // Create order on the server - Dùng USD trực tiếp
               const data = {
                 userId: context?.userData?._id,
-                totalAmount: convertedAmount
+                totalAmount: totalAmount
               }
 
-
               const response = await axios.get(
-                VITE_API_URL + `/api/order/create-order-paypal?userId=${data?.userId}&totalAmount=${data?.totalAmount}`, { headers }
+                VITE_API_URL + `/api/order/create-order-paypal?userId=${data?.userId}&totalAmount=${data?.totalAmount}`, 
+                { withCredentials: true }  // Sử dụng cookie thay vì localStorage
               );
 
               return response?.data?.id; // Return order ID to PayPal
@@ -129,33 +108,24 @@ const Checkout = () => {
       })
     };
 
-
-    // Capture order on the server
-
-    const headers = {
-      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // Include your API key in the Authorization header
-      'Content-Type': 'application/json', // Adjust the content type as needed
-    }
-
-    const response = await axios.post(
+    // Capture order on the server - Dùng cookie
+    await axios.post(
       VITE_API_URL + "/api/order/capture-order-paypal",
       {
         ...info,
         paymentId: data.orderID
-      }, { headers }
+      }, 
+      { withCredentials: true }  // Sử dụng cookie thay vì localStorage
     ).then((res) => {
       context.alertBox("success", res?.data?.message);
       history("/order/success");
       deleteData(`/api/cart/emptyCart/${context?.userData?._id}`).then(() => {
         context?.getCartItems();
       })
+    }).catch((err) => {
+      console.error("Capture order error:", err);
+      context.alertBox("error", "Payment capture failed");
     });
-
-
-    if (response.data.success) {
-      context.alertBox("success", "Order completed and saved to database!");
-    }
-
   }
 
 
@@ -172,73 +142,6 @@ const Checkout = () => {
       setSelectedAddress(e.target.value)
     }
   }
-
-
-
-  const checkout = (e) => {
-    e.preventDefault();
-
-    if (userData?.address_details?.length !== 0) {
-      var options = {
-        key: VITE_APP_RAZORPAY_KEY_ID,
-        key_secret: VITE_APP_RAZORPAY_KEY_SECRET,
-        amount: parseInt(totalAmount * 100),
-        currency: "USD",
-        order_receipt: context?.userData?.name,
-        name: "Advanced UI Techniques",
-        description: "for testing purpose",
-        handler: function (response) {
-
-          const paymentId = response.razorpay_payment_id;
-
-          const user = context?.userData
-
-          const payLoad = {
-            userId: user?._id,
-            products: context?.cartData,
-            paymentId: paymentId,
-            payment_status: "COMPLETED",
-            delivery_address: selectedAddress,
-            totalAmt: totalAmount,
-            date: new Date().toLocaleString("en-US", {
-              month: "short",
-              day: "2-digit",
-              year: "numeric",
-            })
-          };
-
-
-          postData(`/api/order/create`, payLoad).then((res) => {
-            context.alertBox("success", res?.message);
-            if (res?.error === false) {
-              deleteData(`/api/cart/emptyCart/${user?._id}`).then(() => {
-                context?.getCartItems();
-              })
-              history("/order/success");
-            } else {
-              history("/order/failed");
-              context.alertBox("error", res?.message);
-            }
-          });
-
-
-        },
-
-        theme: {
-          color: "#ff5252",
-        },
-      };
-
-      var pay = new window.Razorpay(options);
-      pay.open();
-    }
-    else {
-      context.alertBox("error", "Please add address");
-    }
-
-  }
-
-
 
   const cashOnDelivery = () => {
 
@@ -285,8 +188,7 @@ const Checkout = () => {
 
   return (
     <section className="py-3 lg:py-10 px-3">
-      <form onSubmit={checkout}>
-        <div className="w-full lg:w-[70%] m-auto flex flex-col md:flex-row gap-5">
+      <div className="w-full lg:w-[70%] m-auto flex flex-col md:flex-row gap-5">
           <div className="leftCol w-full md:w-[60%]">
             <div className="card bg-white shadow-md p-5 rounded-md w-full">
               <div className="flex items-center justify-between">
@@ -402,8 +304,6 @@ const Checkout = () => {
               </div>
 
               <div className="flex items-center flex-col gap-3 mb-2">
-                <Button type="submit" className="btn-org btn-lg w-full flex gap-2 items-center"><BsFillBagCheckFill className="text-[20px]" /> Checkout</Button>
-
                 <div id="paypal-button-container" className={`${userData?.address_details?.length === 0 ? 'pointer-events-none' : ''}`}></div>
 
                 <Button type="button" className="btn-dark btn-lg w-full flex gap-2 items-center" onClick={cashOnDelivery}>
@@ -420,7 +320,6 @@ const Checkout = () => {
             </div>
           </div>
         </div>
-      </form>
     </section>
   );
 };

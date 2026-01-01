@@ -248,6 +248,8 @@ export const Orders = () => {
                         >
                           <MenuItem value={'pending'}>Pending</MenuItem>
                           <MenuItem value={'confirm'}>Confirm</MenuItem>
+                          <MenuItem value={'processing'}>Processing</MenuItem>
+                          <MenuItem value={'shipped'}>Shipped</MenuItem>
                           <MenuItem value={'delivered'}>Delivered</MenuItem>
                         </Select>
                       </td>
@@ -308,7 +310,7 @@ export const Orders = () => {
                                 {
                                   order?.products?.map((item, index) => {
                                     return (
-                                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                      <tr key={item?._id || index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <td className="px-6 py-4 font-[500]">
                                           <span className="text-gray-600">
                                             {item?._id}

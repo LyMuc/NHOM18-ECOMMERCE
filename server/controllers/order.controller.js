@@ -217,6 +217,13 @@ export const captureOrderPaypalController = async (request, response) => {
         const req = new paypal.orders.OrdersCaptureRequest(paymentId);
         req.requestBody({});
 
+        const client = getPayPalClient(); 
+        const capture = await client.execute(req); 
+
+        if (capture.result.status !== 'COMPLETED') {
+            return response.status(500).json({ message: "Thanh toán thất bại" });
+        }
+
         const orderInfo = {
             userId: request.body.userId,
             products: request.body.products,
@@ -671,6 +678,40 @@ export const totalUsersController = async (request, response) => {
     }
 }
 
+
+
+export async function trackOrderByIdController(request, response) {
+    try {
+        const { orderId } = request.params;
+
+        // Find order by ID and populate related data
+        const order = await OrderModel.findById(orderId)
+            .populate('delivery_address')
+            .populate('userId', 'name email');
+
+        if (!order) {
+            return response.status(404).json({
+                message: "Order not found. Please check your Order ID.",
+                error: true,
+                success: false
+            });
+        }
+
+        return response.status(200).json({
+            message: "Order details retrieved successfully",
+            data: order,
+            error: false,
+            success: true
+        });
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
+    }
+}
 
 
 export async function deleteOrder(request, response) {
