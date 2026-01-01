@@ -30,7 +30,7 @@ const app = express()
 
 // Cấu hình CORS để hỗ trợ credentials
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'], // Frontend URLs (Client: 5173, Admin: 3000)
+    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://nhom18-ecommerce-frontend.onrender.com'], // Frontend URLs (Client: 5173, Admin: 3000, Production)
     credentials: true, // Cho phép gửi cookie
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization']
