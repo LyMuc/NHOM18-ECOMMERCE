@@ -28,6 +28,42 @@ configureCloudinary();
 
 const app = express()
 
+const defaultCorsOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://nhom18-ecommerce-frontend.onrender.com'
+];
+
+const envCorsOrigins = (process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+const allowedOrigins = envCorsOrigins.length > 0 ? envCorsOrigins : defaultCorsOrigins;
+
+const isOriginAllowed = (origin) => {
+    if (!origin) return true; // non-browser requests (curl/postman) won't send Origin
+    if (allowedOrigins.includes('*')) return true;
+
+    if (allowedOrigins.includes(origin)) return true;
+
+    // Support wildcard host patterns like "*.onrender.com"
+    const wildcardEntries = allowedOrigins.filter((entry) => entry.startsWith('*.'));
+    if (wildcardEntries.length === 0) return false;
+
+    let hostname;
+    try {
+        hostname = new URL(origin).hostname;
+    } catch {
+        return false;
+    }
+
+    return wildcardEntries.some((entry) => {
+        const suffix = entry.slice(1); // ".onrender.com"
+        return hostname.endsWith(suffix);
+    });
+};
+
 // DEBUG: Log request origin để kiểm tra CORS
 app.use((req, res, next) => {
     console.log(`[DEBUG] Method: ${req.method}, Origin: ${req.headers.origin}`);
@@ -36,7 +72,10 @@ app.use((req, res, next) => {
 
 // Cấu hình CORS để hỗ trợ credentials
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://nhom18-ecommerce-frontend.onrender.com'], // Frontend URLs (Client: 5173, Admin: 3000, Production)
+    origin: (origin, callback) => {
+        if (isOriginAllowed(origin)) return callback(null, true);
+        return callback(new Error(`CORS blocked origin: ${origin}`));
+    },
     credentials: true, // Cho phép gửi cookie
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization']

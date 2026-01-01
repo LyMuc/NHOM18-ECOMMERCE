@@ -64,19 +64,6 @@ const Header = () => {
     fetchDataFromApi("/api/logo").then((res) => {
       localStorage.setItem('logo', res?.logo[0]?.logo)
     })
-
-
-    setTimeout(() => {
-      const token = localStorage.getItem('accessToken');
-
-      if (token !== undefined && token !== null && token !== "") {
-        const url = window.location.href
-        history(location.pathname)
-      } else {
-        history("/login")
-      }
-    }, [1000])
-
   }, [context?.isLogin]);
 
   const logout = () => {
