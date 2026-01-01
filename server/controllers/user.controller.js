@@ -10,6 +10,16 @@ import fs from 'fs';
 import ReviewModel from '../models/reviews.model.js.js';
 import AddressModel from '../models/address.model.js'; // Import để populate hoạt động
 
+const getAuthCookieOptions = () => {
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    return {
+        httpOnly: true,
+        secure: isProduction, // must be true for SameSite=None cookies on HTTPS
+        sameSite: isProduction ? 'None' : 'Lax',
+    };
+};
+
 // Cloudinary đã được cấu hình trong index.js
 
 export async function registerUserController(req, res) {
@@ -188,12 +198,7 @@ export async function loginUserController(request, response) {
         })
 
         // Set cookie
-        const cookiesOption = {
-            httpOnly: true,
-            // secure: true,
-            // sameSite: "None"
-            secure: false, //Để tạm để chạy được trên localhost
-        }
+        const cookiesOption = getAuthCookieOptions();
         response.cookie('accessToken', accesstoken, cookiesOption)
         response.cookie('refreshToken', refreshToken, cookiesOption)
 
@@ -248,12 +253,7 @@ export async function authWithGoogle(request, response) {
             })
 
             // Set cookie
-            const cookiesOption = {
-                httpOnly: true,
-                secure: false, 
-                // secure: true,
-                // sameSite: "None"
-            }
+            const cookiesOption = getAuthCookieOptions();
             response.cookie('accessToken', accesstoken, cookiesOption)
             response.cookie('refreshToken', refreshToken, cookiesOption)
 
@@ -280,12 +280,7 @@ export async function authWithGoogle(request, response) {
             })
 
             // Set cookie
-            const cookiesOption = {
-                httpOnly: true,
-                secure: false, 
-                // secure: true,
-                // sameSite: "None"
-            }
+            const cookiesOption = getAuthCookieOptions();
             response.cookie('accessToken', accesstoken, cookiesOption)
             response.cookie('refreshToken', refreshToken, cookiesOption)
 
@@ -577,10 +572,7 @@ export async function changePasswordController(request, response) {
 export async function logoutController(request, response) {
     try {
         // Xóa cookie
-        const cookiesOption = {
-            httpOnly: true,
-            secure: false,
-        }
+        const cookiesOption = getAuthCookieOptions();
 
         response.clearCookie('accessToken', cookiesOption);
         response.clearCookie('refreshToken', cookiesOption);
@@ -818,11 +810,7 @@ export async function refreshToken(request, response) {
         const userId = verifyToken?._id;
         const newAccessToken = await generatedAccessToken(userId)
 
-        const cookiesOption = {
-            httpOnly: true,
-            secure: true,
-            sameSite: "None"
-        }
+        const cookiesOption = getAuthCookieOptions();
 
         response.cookie('accessToken', newAccessToken, cookiesOption)
 

@@ -28,6 +28,9 @@ configureCloudinary();
 
 const app = express()
 
+// Render/NGINX proxy terminates TLS upstream
+app.set('trust proxy', 1);
+
 const defaultCorsOrigins = [
     'http://localhost:5173',
     'http://localhost:3000',
