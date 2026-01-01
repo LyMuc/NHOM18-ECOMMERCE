@@ -98,34 +98,51 @@ const MyAccount = () => {
 
     if (formFields.name === "") {
       context.alertBox("error", "Please enter full name");
+      setIsLoading(false);
       return false
     }
 
 
     if (formFields.email === "") {
       context.alertBox("error", "Please enter email");
+      setIsLoading(false);
       return false
     }
 
 
     if (formFields.mobile === "") {
       context.alertBox("error", "Please enter mobile number");
+      setIsLoading(false);
       return false
     }
 
 
-    editData(`/api/users/${userId}`, formFields, { withCredentials: true }).then((res) => {
-      console.log(res)
-      if (res?.error !== true) {
-        setIsLoading(false);
-        context.alertBox("success", res?.data?.message);
+    editData(`/api/users/${userId}`, formFields, { withCredentials: true })
+      .then((res) => {
+        const apiRes = res?.data || {};
 
-      } else {
-        context.alertBox("error", res?.data?.message);
+        if (apiRes?.error !== true) {
+          context.alertBox("success", apiRes?.message);
+          // Refresh global user profile so Header/Sidebar update without reload
+          if (typeof context?.getUserDetails === "function") {
+            context.getUserDetails();
+          } else if (typeof context?.setUserData === "function") {
+            context.setUserData((prev) => ({
+              ...(prev || {}),
+              ...formFields,
+            }));
+          }
+        } else {
+          context.alertBox("error", apiRes?.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        context.alertBox("error", "Update profile failed");
+      })
+      .finally(() => {
         setIsLoading(false);
-      }
-
-    })
+      });
 
 
   }
