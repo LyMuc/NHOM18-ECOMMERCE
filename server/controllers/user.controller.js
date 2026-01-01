@@ -59,12 +59,20 @@ export async function registerUserController(req, res) {
 
         await user.save();
 
-        await sendEmailFunction({
+        const emailSent = await sendEmailFunction({
             to: email, 
             subject: "Verify email from Nhom18-Ecommerce", 
             text: "", 
             html: VerificationEmail(name, verifyCode)
         })
+
+        if (!emailSent) {
+            return res.status(502).json({
+                message: "Email service unavailable. Please try again later.",
+                error: true,
+                success: false
+            })
+        }
 
         // const token = jwt.sign({
         //     email: email,
@@ -360,12 +368,20 @@ export async function forgotPasswordController(request, response) {
             await user.save();
 
             // Gửi email chứa OTP
-            await sendEmailFunction({
+            const emailSent = await sendEmailFunction({
                 to: email,
                 subject: "Verify OTP for Reset Password from Nhom18-Ecommerce App",
                 text: "",
                 html: VerificationEmail(user.name, verifyCode)
             })
+
+            if (!emailSent) {
+                return response.status(502).json({
+                    message: "Email service unavailable. Please try again later.",
+                    error: true,
+                    success: false
+                })
+            }
 
             return response.json({
                 message: "check your email",
