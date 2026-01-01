@@ -1,30 +1,236 @@
-import React, { StrictMode } from 'react';
-import './login.css';
+import React,{useContext, useEffect, useState} from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { Link, useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import { MyContext } from "../../App";
+import CircularProgress from '@mui/material/CircularProgress';
+import { postData, fetchDataFromApi } from "../../utils/api";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { firebaseApp } from "../../firebase";
+
+const auth = getAuth(firebaseApp);
+const googleProvider = new GoogleAuthProvider();
 
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordShow, setIsPasswordShow] = useState(false);
+  const [formFields, setFormsFields] = useState({
+    email:'',
+    password:''
+  });
+
+  const context = useContext(MyContext);
+  const history = useNavigate();
+
+  useEffect(()=>{
+    window.scrollTo(0,0)
+    
+    // Nếu đã login → redirect về trang chủ
+    if (context.isLogin) {
+      history("/")
+    }
+  },[context.isLogin]);
+
+  // Function Forgot Password
+  const forgotPassword =()=>{
+    if(formFields.email===""){
+      context.alertBox("error", "Please enter email");
+      return false;
+    }
+    else{
+      context.alertBox("success", `OTP send to ${formFields.email}`);
+      localStorage.setItem("userEmail", formFields.email);
+      localStorage.setItem("actionType", 'forgot-password');
+
+      postData("/api/users/forgot-password", {
+        email: formFields.email,
+      }).then((res) => {
+        if (res?.error === false) {
+          context.alertBox("success", res?.message);
+          history("/verify")
+        } else {
+          context.alertBox("error", res?.message);
+        }
+      })
+    }
+  }
+
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setFormsFields(() => {
+      return {
+        ...formFields,
+        [name]: value
+      }
+    })
+  }
+
+  const valideValue = Object.values(formFields).every(el => el)
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    // Validation
+    if (formFields.email === "") {
+      context.alertBox("error", "Please enter email");
+      return false
+    }
+
+    if (formFields.password === "") {
+      context.alertBox("error", "Please enter password");
+      return false
+    }
+
+    // Gọi API login
+    postData("/api/users/login", formFields, { withCredentials: true }).then((res) => {
+      console.log(res)
+
+      if (res?.error !== true) {
+        setIsLoading(false);
+        context.alertBox("success", res?.message);
+        
+        setFormsFields({
+          email: "",
+          password: ""
+        })
+
+        fetchDataFromApi("/api/users/user-details", { withCredentials: true }).then((userRes) => {
+          context.setUserData(userRes.data);
+          context.setIsLogin(true);
+
+          localStorage.setItem("userEmail", userRes.data.email);
+          history("/"); // chuyển route sau khi context đã sẵn sàng
+        });
+      } else {
+        context.alertBox("error", res?.message);
+        setIsLoading(false);
+      }
+    })
+  }
+
+  // Google Login
+  const authWithGoogle = () => {
+  signInWithPopup(auth, googleProvider)
+    .then((result) => {
+      const user = result.user;
+
+      const fields = {
+        name: user.providerData[0].displayName,
+        email: user.providerData[0].email,
+        password: null,
+        avatar: user.providerData[0].photoURL,
+        mobile: user.providerData[0].phoneNumber,
+        role: "USER"
+      };
+
+      postData("/api/users/authWithGoogle", fields, { withCredentials: true })
+        .then((res) => {
+          if (res?.error !== true) {
+            fetchDataFromApi("/api/users/user-details", { withCredentials: true }).then((userRes) => {
+              if (userRes?.error === false) {
+                context.setUserData(userRes.data);
+                context.setIsLogin(true);
+                localStorage.setItem("userEmail", userRes.data.email);
+                context.alertBox("success", res?.message);
+                history("/");
+              } else {
+                context.alertBox("error", "Login failed while getting user info.");
+              }
+            });
+          } else {
+            context.alertBox("error", res?.message);
+          }
+        })
+        .catch((err) => {
+          console.error("Login error:", err);
+          context.alertBox("error", "Something went wrong.");
+        });
+    })
+    .catch((error) => {
+      console.error("Google Auth Error:", error);
+      context.alertBox("error", "Google authentication failed.");
+    });
+};
+
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-[1000px] bg-white p-10 border border-gray-200 rounded-lg shadow">
-        <div className="mb-5">
-          <label className="block mb-2 text-gray-800 font-medium">Email</label>
-          <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-300" />
-        </div>
-        <div className="mb-5">
-          <label className="block mb-2 text-gray-800 font-medium">Password</label>
-          <div className="relative flex items-center">
-            <input type="password" className="w-full px-3 py-2 border border-gray-300 rounded pr-20 focus:outline-none focus:ring-2 focus:ring-gray-300" />
-            <button type="button" className="absolute right-1 top-1 bottom-1 bg-black text-white px-4 rounded-r text-sm font-bold">SHOW</button>
-          </div>
-        </div>
-        <a href="#" className="block text-center text-gray-700 text-sm mt-2 mb-5">
-          Forgot your password?
-        </a>
-        <button className="w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded font-bold mb-5">SIGN IN</button>
-        <div className="text-center text-gray-800 text-sm">
-          No account? <a href="#" className="font-semibold hover:underline">Create one here</a>
+    <section className="section py-5 sm:py-10">
+      <div className="container">
+        <div className="card shadow-md w-full sm:w-[400px] m-auto rounded-md bg-white p-5 px-10">
+          <h3 className="text-center text-[18px] text-black">
+            Login to your account
+          </h3>
+
+          <form className="w-full mt-5" onSubmit={handleSubmit}>
+            <div className="form-group w-full mb-5">
+              <TextField
+                type="email"
+                id="email"
+                name="email"
+                value={formFields.email}
+                disabled={isLoading === true ? true : false}
+                label="Email"
+                variant="outlined"
+                className="w-full"
+                onChange={onChangeInput}
+              />
+            </div>
+
+            <div className="form-group w-full mb-5 relative">
+              <TextField
+                type={isPasswordShow===false ? 'password' : 'text'}
+                id="password"
+                label="Password"
+                variant="outlined"
+                className="w-full"
+                name="password"
+                value={formFields.password}
+                disabled={isLoading === true ? true : false}
+                onChange={onChangeInput}
+              />
+              <Button 
+                className="!absolute top-[10px] right-[10px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-black" 
+                onClick={()=> setIsPasswordShow(!isPasswordShow)}
+              >
+                {isPasswordShow===false ? 
+                  <IoMdEye className="text-[20px] opacity-75"/> :
+                  <IoMdEyeOff className="text-[20px] opacity-75"/>
+                }
+              </Button>
+            </div>
+
+            <a className="link cursor-pointer text-[14px] font-[600]" onClick={forgotPassword}>
+              Forgot Password?
+            </a>
+
+            <div className="flex items-center w-full mt-3 mb-3">
+              <Button type="submit" disabled={!valideValue} className="btn-org btn-lg w-full flex gap-3">
+                {isLoading === true ? 
+                  <CircularProgress color="inherit" /> : 'Login'
+                }
+              </Button>
+            </div>
+
+            <p className="text-center">
+              Not Registered? 
+              <Link className="link text-[14px] font-[600] text-primary" to="/register"> Sign Up</Link>
+            </p>
+
+            <p className="text-center font-[500]">Or continue with social account</p>
+
+            <Button 
+              className="flex gap-3 w-full !bg-[#f1f1f1] btn-lg !text-black"
+              onClick={authWithGoogle}
+            >
+              <FcGoogle className="text-[20px]"/> Login with Google
+            </Button>
+          </form>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
