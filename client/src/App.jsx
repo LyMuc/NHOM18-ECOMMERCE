@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import { createContext } from "react";
 
@@ -259,7 +259,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
         <MyContext.Provider value={values}>
           <Header></Header>
           <Routes>
@@ -295,7 +295,7 @@ function App() {
           </Routes>
           <Footer />
         </MyContext.Provider>
-      </BrowserRouter>
+      </HashRouter>
 
       <Toaster/>
     </>
