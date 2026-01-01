@@ -28,6 +28,12 @@ configureCloudinary();
 
 const app = express()
 
+// DEBUG: Log request origin để kiểm tra CORS
+app.use((req, res, next) => {
+    console.log(`[DEBUG] Method: ${req.method}, Origin: ${req.headers.origin}`);
+    next();
+});
+
 // Cấu hình CORS để hỗ trợ credentials
 app.use(cors({
     origin: ['http://localhost:5173', 'http://localhost:3000', 'https://nhom18-ecommerce-frontend.onrender.com'], // Frontend URLs (Client: 5173, Admin: 3000, Production)
