@@ -17,12 +17,25 @@ const Verify = () => {
   const verityOTP = (e) => {
     e.preventDefault();
 
+    const email = localStorage.getItem("userEmail");
+
+    if (!email) {
+      context.alertBox("error", "Missing email. Please start the verification flow again.");
+      history("/register");
+      return;
+    }
+
+    if (!otp || otp.length !== 6) {
+      context.alertBox("error", "Please enter the 6-digit OTP.");
+      return;
+    }
+
     const actionType = localStorage.getItem("actionType");
 
     if (actionType !== "forgot-password") {
 
       postData("/api/users/verifyEmail", {
-        email: localStorage.getItem("userEmail"),
+        email,
         otp: otp
       }).then((res) => {
         if (res?.error === false) {
@@ -37,7 +50,7 @@ const Verify = () => {
     
     else{
       postData("/api/users/verify-forgot-password-otp", {
-        email: localStorage.getItem("userEmail"),
+        email,
         otp: otp
       }).then((res) => {
         if (res?.error === false) {

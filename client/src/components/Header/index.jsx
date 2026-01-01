@@ -130,7 +130,10 @@ const Header = () => {
 
             <div className="col1 w-[40%] lg:w-[25%]">
               <Link to={"/"}>
-                <img src={localStorage.getItem('logo')} className="max-w-[140px] lg:max-w-[200px]" />
+                <img
+                  src={localStorage.getItem('logo') || '/logo.png'}
+                  className="max-w-[140px] lg:max-w-[200px]"
+                />
               </Link>
             </div>
 
