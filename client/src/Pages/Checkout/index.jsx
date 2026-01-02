@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Button } from "@mui/material";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { MyContext } from '../../App';
@@ -17,116 +17,193 @@ const Checkout = () => {
   const [userData, setUserData] = useState(null);
   const [isChecked, setIsChecked] = useState(0);
   const [selectedAddress, setSelectedAddress] = useState("");
-  const [totalAmount, setTotalAmount] = useState();
+  const [totalAmount, setTotalAmount] = useState(0);
   const [isLoading, setIsloading] = useState(false);
+  const [isPaypalReady, setIsPaypalReady] = useState(false);
+  const paypalContainerRef = useRef(null);
+  
+  // Use refs to always have latest values in PayPal callbacks
+  const userIdRef = useRef(null);
+  const totalAmountRef = useRef(0);
+  const selectedAddressRef = useRef("");
+  const cartDataRef = useRef([]);
+  
   const context = useContext(MyContext);
 
   const history = useNavigate();
 
+  // Keep refs updated with latest values
+  useEffect(() => {
+    userIdRef.current = context?.userData?._id;
+    cartDataRef.current = context?.cartData;
+  }, [context?.userData?._id, context?.cartData]);
+
+  useEffect(() => {
+    totalAmountRef.current = totalAmount;
+  }, [totalAmount]);
+
+  useEffect(() => {
+    selectedAddressRef.current = selectedAddress;
+  }, [selectedAddress]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     setUserData(context?.userData)
-    setSelectedAddress(context?.userData?.address_details[0]?._id);
+    if (context?.userData?.address_details?.[0]?._id) {
+      setSelectedAddress(context?.userData?.address_details[0]?._id);
+    }
+  }, [context?.userData])
 
-  }, [context?.userData, userData])
 
-
+  // Tính totalAmount - đảm bảo là số, không phải string
   useEffect(() => {
-    setTotalAmount(
-      context.cartData?.length !== 0 ?
-        context.cartData?.map(item => parseInt(item.price) * item.quantity)
-          .reduce((total, value) => total + value, 0) : 0)
-      ?.toLocaleString('en-US', { style: 'currency', currency: 'USD' }
-      );
-
-    // localStorage.setItem("totalAmount", context.cartData?.length !== 0 ?
-    //   context.cartData?.map(item => parseInt(item.price) * item.quantity)
-    //     .reduce((total, value) => total + value, 0) : 0)
-    //   ?.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-
+    const total = context.cartData?.length !== 0 ?
+      context.cartData?.map(item => parseInt(item.price) * item.quantity)
+        .reduce((total, value) => total + value, 0) : 0;
+    
+    setTotalAmount(total);
   }, [context.cartData])
 
 
-
-
-
+  // Load PayPal Script
   useEffect(() => {
+    // Check if PayPal is already loaded
+    if (window.paypal) {
+      setIsPaypalReady(true);
+      return;
+    }
+    
+    const existingScript = document.querySelector('script[src*="paypal.com/sdk/js"]');
+    if (existingScript) {
+      // Script exists but PayPal might not be ready yet
+      const checkPaypal = setInterval(() => {
+        if (window.paypal) {
+          clearInterval(checkPaypal);
+          setIsPaypalReady(true);
+        }
+      }, 100);
+      
+      // Timeout after 10 seconds
+      setTimeout(() => clearInterval(checkPaypal), 10000);
+      return;
+    }
 
-    // Load the PayPal JavaScript SDK
     const script = document.createElement("script");
     script.src = `https://www.paypal.com/sdk/js?client-id=${VITE_APP_PAYPAL_CLIENT_ID}&currency=USD&disable-funding=card`;
     script.async = true;
     script.onload = () => {
-      window.paypal
-        .Buttons(
-          {
-            createOrder: async () => {
-
-              // Create order on the server - Dùng USD trực tiếp
-              const data = {
-                userId: context?.userData?._id,
-                totalAmount: totalAmount
-              }
-
-              const response = await axios.get(
-                VITE_API_URL + `/api/order/create-order-paypal?userId=${data?.userId}&totalAmount=${data?.totalAmount}`, 
-                { withCredentials: true }  // Sử dụng cookie thay vì localStorage
-              );
-
-              return response?.data?.id; // Return order ID to PayPal
-
-            },
-            onApprove: async (data) => {
-              onApprovePayment(data);
-            },
-            onError: (err) => {
-              history("/order/failed");
-              console.error("PayPal Checkout onError:", err);
-            },
-          })
-        .render("#paypal-button-container");
+      setIsPaypalReady(true);
+    };
+    script.onerror = () => {
+      console.error("Failed to load PayPal SDK");
     };
     document.body.appendChild(script);
-  }, [context?.cartData, context?.userData, selectedAddress]);
+  }, []);
 
 
+  // Render PayPal Button
+  useEffect(() => {
+    if (!isPaypalReady || !window.paypal) return;
+    
+    const container = paypalContainerRef.current;
+    if (!container) return;
+    
+    // Clear existing buttons
+    container.innerHTML = "";
 
+    const alertBox = context.alertBox;
+    const getCartItems = context?.getCartItems;
 
-  const onApprovePayment = async (data) => {
-    const user = context?.userData;
+    window.paypal
+      .Buttons({
+        createOrder: async () => {
+          // Get latest values from refs at the time of click
+          const currentUserId = userIdRef.current;
+          const currentTotalAmount = totalAmountRef.current;
+          
+          try {
+            // Validate data before sending
+            if (!currentUserId) {
+              throw new Error("Please login to continue");
+            }
+            if (!currentTotalAmount || currentTotalAmount <= 0) {
+              throw new Error("Your cart is empty");
+            }
 
-    const info = {
-      userId: user?._id,
-      products: context?.cartData,
-      payment_status: "COMPLETE",
-      delivery_address: selectedAddress,
-      totalAmount: totalAmount,
-      date: new Date().toLocaleString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
+            const response = await axios.get(
+              VITE_API_URL + `/api/order/create-order-paypal?userId=${currentUserId}&totalAmount=${currentTotalAmount}`, 
+              { withCredentials: true }
+            );
+
+            if (!response?.data?.id) {
+              throw new Error("Failed to create PayPal order");
+            }
+
+            return response.data.id;
+          } catch (error) {
+            console.error("PayPal createOrder error:", error);
+            alertBox("error", error.message || "Failed to create PayPal order. Please try again.");
+            throw error;
+          }
+        },
+        onApprove: async (data) => {
+          // Get latest values from refs
+          const currentUserId = userIdRef.current;
+          const currentTotalAmount = totalAmountRef.current;
+          const currentSelectedAddress = selectedAddressRef.current;
+          const currentCartData = cartDataRef.current;
+          
+          const info = {
+            userId: currentUserId,
+            products: currentCartData,
+            payment_status: "COMPLETE",
+            delivery_address: currentSelectedAddress,
+            totalAmount: currentTotalAmount,
+            date: new Date().toLocaleString("en-US", {
+              month: "short",
+              day: "2-digit",
+              year: "numeric",
+            })
+          };
+
+          try {
+            const res = await axios.post(
+              VITE_API_URL + "/api/order/capture-order-paypal",
+              {
+                ...info,
+                paymentId: data.orderID
+              }, 
+              { withCredentials: true }
+            );
+            
+            alertBox("success", res?.data?.message || "Payment successful!");
+            
+            await deleteData(`/api/cart/emptyCart/${currentUserId}`);
+            getCartItems?.();
+            
+            history("/order/success");
+          } catch (err) {
+            console.error("Capture order error:", err);
+            alertBox("error", "Payment capture failed");
+            history("/order/failed");
+          }
+        },
+        onError: (err) => {
+          console.error("PayPal Checkout onError:", err);
+          alertBox("error", "Payment failed. Please try again.");
+        },
+        onCancel: () => {
+          alertBox("info", "Payment cancelled");
+        }
       })
-    };
+      .render(container)
+      .catch(err => {
+        console.error("PayPal render error:", err);
+      });
 
-    // Capture order on the server - Dùng cookie
-    await axios.post(
-      VITE_API_URL + "/api/order/capture-order-paypal",
-      {
-        ...info,
-        paymentId: data.orderID
-      }, 
-      { withCredentials: true }  // Sử dụng cookie thay vì localStorage
-    ).then((res) => {
-      context.alertBox("success", res?.data?.message);
-      history("/order/success");
-      deleteData(`/api/cart/emptyCart/${context?.userData?._id}`).then(() => {
-        context?.getCartItems();
-      })
-    }).catch((err) => {
-      console.error("Capture order error:", err);
-      context.alertBox("error", "Payment capture failed");
-    });
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPaypalReady]);
+
 
 
   const editAddress = (id) => {
@@ -304,7 +381,12 @@ const Checkout = () => {
               </div>
 
               <div className="flex items-center flex-col gap-3 mb-2">
-                <div id="paypal-button-container" className={`${userData?.address_details?.length === 0 ? 'pointer-events-none' : ''}`}></div>
+                <div 
+                  ref={paypalContainerRef}
+                  id="paypal-button-container" 
+                  className={`w-full ${userData?.address_details?.length === 0 ? 'pointer-events-none opacity-50' : ''}`}
+                  style={{ minHeight: '45px' }}
+                ></div>
 
                 <Button type="button" className="btn-dark btn-lg w-full flex gap-2 items-center" onClick={cashOnDelivery}>
                   {

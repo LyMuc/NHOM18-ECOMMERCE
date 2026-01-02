@@ -89,7 +89,7 @@ const OrderConfirmationEmail = (username, orders) => {
             ? orders?.products
                 ?.map(
                     (item) =>
-                        parseInt(item.subTotal) * item.quantity
+                        parseFloat(item.subTotal)
                 )
                 .reduce((total, value) => total + value, 0)
             : 0

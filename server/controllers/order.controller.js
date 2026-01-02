@@ -174,6 +174,18 @@ function getPayPalClient() {
 
 export const createOrderPaypalController = async (request, response) => {
     try {
+        const { userId, totalAmount } = request.query;
+
+        // Validate input
+        if (!userId || !totalAmount || isNaN(parseFloat(totalAmount)) || parseFloat(totalAmount) <= 0) {
+            return response.status(400).json({
+                error: true,
+                success: false,
+                message: "Invalid userId or totalAmount. totalAmount must be a positive number."
+            });
+        }
+
+        const amount = parseFloat(totalAmount).toFixed(2);
 
         const req = new paypal.orders.OrdersCreateRequest();
         req.prefer("return=representation");
@@ -183,7 +195,7 @@ export const createOrderPaypalController = async (request, response) => {
             purchase_units: [{
                 amount: {
                     currency_code: 'USD',
-                    value: request.query.totalAmount
+                    value: amount
                 }
             }]
         });
@@ -194,8 +206,12 @@ export const createOrderPaypalController = async (request, response) => {
             const order = await client.execute(req);
             response.json({ id: order.result.id });
         } catch (error) {
-            console.error(error);
-            response.status(500).send("Error creating PayPal order");
+            console.error("PayPal API Error:", error);
+            response.status(500).json({
+                error: true,
+                success: false,
+                message: "Error creating PayPal order"
+            });
         }
 
     } catch (error) {
