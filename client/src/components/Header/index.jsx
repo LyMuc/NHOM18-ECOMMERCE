@@ -18,7 +18,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
-import { fetchDataFromApi } from "../../utils/api";
+import { fetchDataFromApi, postData } from "../../utils/api";
 import { LuMapPin } from "react-icons/lu";
 import { useEffect } from "react";
 import { HiOutlineMenu } from "react-icons/hi";
@@ -60,42 +60,46 @@ const Header = () => {
   }, [context?.userData?.avatar]);
 
   useEffect(() => {
-
+    // Fetch logo from API
     fetchDataFromApi("/api/logo").then((res) => {
-      localStorage.setItem('logo', res?.logo[0]?.logo)
+      if (res?.logo?.[0]?.logo) {
+        localStorage.setItem('logo', res.logo[0].logo)
+      }
     })
 
-
-    setTimeout(() => {
-      const token = localStorage.getItem('accessToken');
-
-      if (token !== undefined && token !== null && token !== "") {
-        const url = window.location.href
-        history(location.pathname)
-      } else {
-        history("/login")
-      }
-    }, [1000])
-
+    // Không cần check token nữa vì đã dùng cookie httpOnly
+    // Backend sẽ tự động xác thực qua cookie
+    // Nếu chưa login, user vẫn có thể xem homepage
+    
   }, [context?.isLogin]);
 
-  const logout = () => {
+  const logout = async () => {
     setAnchorEl(null);
-
-    fetchDataFromApi(`/api/user/logout?token=${localStorage.getItem('accessToken')}`, { withCredentials: true }).then((res) => {
+    
+    try {
+      // Gọi API logout để xóa cookie
+      const res = await postData("/api/users/logout", {});
+      
       if (res?.error === false) {
+        // Cập nhật state
         context.setIsLogin(false);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+
         context.setUserData(null);
         context?.setCartData([]);
         context?.setMyListData([]);
+        
+        // Hiển thị thông báo
+        context.alertBox("success", "Logged out successfully");
+        
+        // Chuyển về homepage
         history("/");
+      } else {
+        context.alertBox("error", "Logout failed");
       }
-
-
-    })
-
+    } catch (error) {
+      console.error("Logout error:", error);
+      context.alertBox("error", "An error occurred during logout");
+    }
   }
 
   return (
