@@ -51,7 +51,6 @@ const AdsBannerSlider = (props) => {
                   item={item}
                   image={item?.images[0]}
                   link={"/"}
-                  hideInfo
                 />
               </SwiperSlide>
             )
