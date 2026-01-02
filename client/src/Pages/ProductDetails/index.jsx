@@ -99,7 +99,7 @@ export const ProductDetails = () => {
 
 
 
-      <section className="bg-white py-5">
+      <section className="productDetailsPage bg-white py-5">
         {
           isLoading === true ?
             <div className="flex items-center justify-center min-h-[300px]">

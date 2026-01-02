@@ -1,0 +1,255 @@
+
+/* ============================= */
+/* MOBILE STYLES (320px - 992px) */
+/* ============================= */
+@media only screen and (min-width:320px) and (max-width:992px){
+    html,body{overflow-x: hidden;}
+
+    /* Thêm padding-top cho body khi header fixed */
+    body{padding-top: 70px;}
+
+    .btn-sm{padding: 3px 10px !important; font-size: 11px !important;}
+    .btn-lg{padding: 5px 10px !important; font-size: 14px !important;}
+    .btn{padding: 5px 10px !important; font-size: 12px !important;}
+    .btn svg{font-size: 15px !important;}
+
+    .mobileNav a.active button{color: #ff5252 !important;}
+    .navigation ul{white-space: nowrap; overflow-x: scroll; overflow-y: hidden; display: block !important; text-align: center;}
+    .navigation ul::-webkit-scrollbar{display: none !important;}
+    .navigation ul li{display: inline-block !important; vertical-align: top !important;}
+
+    .container{width: 95% !important; max-width: 95% !important;}
+
+    .scrollableBox{white-space: nowrap; overflow-x: scroll; overflow-y: hidden; display: block !important;}
+    .scrollableBox::-webkit-scrollbar{display: none !important;}
+    .scrollableBox .box{display: inline-block !important; vertical-align: top !important; margin-right: 12px !important; width: 300px !important;}
+    .scrollableBox .box .info *{white-space: break-spaces !important;}
+
+    .scrollableBox .col{display: inline-block !important; vertical-align: top !important; margin-right: 12px !important; width: 200px !important;}
+    .productsSlider .swiper, .blogSection .swiper{overflow: hidden !important;}
+
+    .resBannersSlider{white-space: nowrap; overflow-x: scroll; overflow-y: hidden; display: block !important;}
+
+    .productsSlider .swiper-wrapper{padding: 7px !important;}
+    .resBannersSlider .swiper-slide{display: inline-block !important; vertical-align: top !important; margin-right: 12px !important; width: 300px !important;}
+    .resBannersSlider .swiper-slide *{white-space: break-spaces !important;}
+
+    .footerBoxWrap{padding-left:20px !important ;}
+    .footerBoxWrap .col{width: 180px !important;}
+
+    .sidebarWrapper.open{bottom: 0px !important; opacity: 1 !important;}
+
+    /* Footer responsive */
+    .footer .part1{width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 20px !important;}
+    .footer .part2{padding-left: 0 !important;}
+
+    /* ProductDetails page responsive */
+    .productDetailsPage .productZoomContainer{width: 100% !important;}
+    .productDetailsPage .productContent{width: 100% !important; padding: 10px !important;}
+
+    /* MyAccount page responsive */
+    .myAccountPage .leftPart{width: 100% !important; margin-bottom: 20px;}
+    .myAccountPage .rightPart{width: 100% !important;}
+
+    /* Checkout page responsive */
+    .checkoutPage .leftCol{width: 100% !important;}
+    .checkoutPage .rightCol{width: 100% !important;}
+
+    /* Cart page */
+    .cartPage .leftPart{width: 100% !important;}
+    .cartPage .rightPart{width: 100% !important;}
+    .cartPage .container{width: 95% !important; max-width: 95% !important;}
+
+    /* Orders page */
+    .ordersPage .col1{display: none !important;}
+    .ordersPage .col2{width: 100% !important;}
+
+    /* MyList page */
+    .myListPage .col1{display: none !important;}
+    .myListPage .col2{width: 100% !important;}
+
+    /* Product Listing page */
+    .productListingPage .rightContent{width: 100% !important;}
+
+    /* Search page */
+    .searchPage .rightContent{width: 100% !important;}
+
+    /* Thêm padding bottom cho mobile navigation */
+    main{padding-bottom: 70px;}
+
+    /* Product zoom slider */
+    .zoomProductSliderThumbs{flex-direction: row !important; width: 100% !important;}
+    .zoomProductSliderThumbs .swiper{width: 100% !important; height: auto !important;}
+
+    /* Login/Signup cards */
+    .loginPage .card, .signupPage .card{width: 100% !important; padding: 20px !important;}
+
+    /* Account sidebar on mobile - hide by default */
+    .accountSidebar{display: none;}
+    
+}
+
+/* ============================= */
+/* TABLET STYLES (768px - 992px) */
+/* ============================= */
+@media only screen and (min-width:768px) and (max-width:992px){
+    .container{width: 90% !important; max-width: 90% !important;}
+    
+    .scrollableBox .box{width: 350px !important;}
+    .scrollableBox .col{width: 250px !important;}
+    
+    .footerBoxWrap .col{width: 200px !important;}
+    
+    /* Grid products 3 columns on tablet */
+    .productGrid{grid-template-columns: repeat(3, 1fr) !important;}
+
+    /* Show account sidebar on tablet */
+    .accountSidebar{display: block;}
+
+    /* Login/Signup cards */
+    .loginPage .card, .signupPage .card{width: 400px !important;}
+
+    /* Checkout */
+    .checkoutPage .leftCol{width: 60% !important;}
+    .checkoutPage .rightCol{width: 40% !important;}
+}
+
+/* ============================= */
+/* SMALL MOBILE (320px - 767px)  */
+/* ============================= */
+@media only screen and (min-width:320px) and (max-width:767px){
+    .MuiTabs-flexContainer button{font-size: 13px !important;}
+    .productItem  .addToCartBtn{padding: 7px 13px !important;}
+
+    .part2_col1 li a,.part2_col2 li a{font-size: 13px !important;} 
+
+    .sidebar{max-height: 100vh !important; overflow-y: scroll !important; overflow-x: hidden !important;}
+    .sidebar::-webkit-scrollbar{display: none !important;}
+
+    .zoomProductSliderThumbs.space .swiper-wrapper{padding-top: 0px !important;}
+
+    /* Product grid 2 columns on small mobile */
+    .productGrid{grid-template-columns: repeat(2, 1fr) !important;}
+
+    /* Footer columns */
+    .footer .part2_col1, .footer .part2_col2{width: 50% !important;}
+
+    /* Tables responsive */
+    table{display: block; overflow-x: auto; white-space: nowrap;}
+    table::-webkit-scrollbar{height: 5px !important;}
+    table::-webkit-scrollbar-thumb{background: #ccc !important;}
+
+    /* Order items */
+    .orderItem{flex-direction: column !important;}
+    .orderItem .imgWrapper{width: 100% !important; margin-bottom: 10px;}
+    .orderItem .info{width: 100% !important;}
+
+    /* Header adjustments */
+    header .header{padding: 8px 0 !important;}
+    header .logo img{max-width: 120px !important; height: 35px !important;}
+
+    /* Product item card */
+    .productItem{margin-bottom: 10px !important;}
+    .productItem .info h4{font-size: 13px !important; line-height: 18px !important;}
+    .productItem .price{font-size: 14px !important;}
+    .productItem .oldPrice{font-size: 12px !important;}
+
+    /* Cart items */
+    .cartItems .imgWrapper{width: 80px !important; height: 80px !important;}
+    .cartItems .info{padding-left: 10px !important;}
+    .cartItems .info h4{font-size: 13px !important;}
+
+    /* Home slider */
+    .homeSlider .item img{height: 180px !important; object-fit: cover !important;}
+
+    /* Category slider */
+    .homeCatSlider .item{padding: 10px !important;}
+    .homeCatSlider .item h3{font-size: 12px !important;}
+}
+
+/* ============================= */
+/* EXTRA SMALL (320px - 575px)   */
+/* ============================= */
+@media only screen and (min-width:320px) and (max-width:575px){
+    .cartPanel .MuiPaper-root,.addressPanel .MuiPaper-root{width: 300px !important;}
+    
+    /* Product grid 1 column on very small screens - optional, keep 2 cols */
+    /* .productGrid{grid-template-columns: repeat(1, 1fr) !important;} */
+    
+    /* Banner heights */
+    .homeSlider .item img{height: 160px !important;}
+    
+    /* Account sidebar */
+    .accountSidebar{width: 100% !important;}
+    
+    /* Checkout form inputs */
+    .checkoutPage input, .checkoutPage select{font-size: 14px !important;}
+    
+    /* Dialog/Modal */
+    .MuiDialog-paper{width: 95% !important; max-width: 95% !important; margin: 10px !important;}
+    .productDetailsModal .MuiDialog-paper{width: 95% !important; max-width: 95% !important;}
+
+    /* Cart page container */
+    .cartPage .container{width: 100% !important; max-width: 100% !important; padding: 0 10px !important;}
+    
+    /* Footer */
+    footer .container{padding: 0 10px !important;}
+    .footerBoxWrap .col{width: 150px !important;}
+    .footerBoxWrap .col h3{font-size: 14px !important;}
+    .footerBoxWrap .col p{font-size: 11px !important;}
+    .footerBoxWrap .col svg{font-size: 30px !important;}
+
+    /* Product details */
+    .productDetailsPage .productContent h1{font-size: 18px !important;}
+    .productDetailsPage .productContent .price{font-size: 20px !important;}
+
+    /* Text sizes */
+    h1{font-size: 20px !important;}
+    h2{font-size: 18px !important;}
+    h3{font-size: 16px !important;}
+}
+
+/* ============================= */
+/* SMALL-MEDIUM (575px - 767px)  */
+/* ============================= */
+@media only screen and (min-width:575px) and (max-width:767px){
+    .cartPanel .MuiPaper-root,.addressPanel .MuiPaper-root{width: 400px !important;}
+    
+    /* Product grid 2 columns */
+    .productGrid{grid-template-columns: repeat(2, 1fr) !important;}
+
+    /* Home slider */
+    .homeSlider .item img{height: 220px !important;}
+
+    /* Login/Signup cards */
+    .loginPage .card, .signupPage .card{width: 90% !important;}
+}
+
+/* ============================= */
+/* LANDSCAPE MOBILE              */
+/* ============================= */
+@media only screen and (max-height: 500px) and (orientation: landscape){
+    .homeSlider .item img{height: 250px !important;}
+    .sidebar{max-height: 80vh !important;}
+    body{padding-top: 60px;}
+    main{padding-bottom: 60px;}
+}
+
+/* ============================= */
+/* PRINT STYLES                  */
+/* ============================= */
+@media print{
+    .mobileNav, header, footer, .sidebar, .accountSidebar{display: none !important;}
+    body{padding: 0 !important;}
+    .container{width: 100% !important; max-width: 100% !important;}
+}
+
+/* ============================= */
+/* HIGH DPI / RETINA DISPLAYS    */
+/* ============================= */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+       only screen and (min-resolution: 192dpi){
+    .productItem img, .homeSlider img, .homeCatSlider img{
+        image-rendering: -webkit-optimize-contrast;
+    }
+}

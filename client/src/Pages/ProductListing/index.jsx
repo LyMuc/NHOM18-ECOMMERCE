@@ -55,7 +55,7 @@ const ProductListing = () => {
   }
 
   return (
-    <section className=" pb-0">
+    <section className="productListingPage pb-0">
 
       <div className="bg-white p-2">
         <div className="container flex gap-3">

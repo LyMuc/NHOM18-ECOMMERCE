@@ -187,7 +187,7 @@ const Checkout = () => {
   }
 
   return (
-    <section className="py-3 lg:py-10 px-3">
+    <section className="checkoutPage py-3 lg:py-10 px-3">
       <div className="w-full lg:w-[70%] m-auto flex flex-col md:flex-row gap-5">
           <div className="leftCol w-full md:w-[60%]">
             <div className="card bg-white shadow-md p-5 rounded-md w-full">

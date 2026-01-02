@@ -55,7 +55,7 @@ const SearchPage = () => {
   }
 
   return (
-    <section className=" pb-0">
+    <section className="searchPage pb-0">
 
       <div className="bg-white p-2">
         <div className="container flex gap-3">

@@ -15,7 +15,7 @@ const MyList = () => {
   },[]);
 
   return (
-    <section className="py-4 lg:py-6 pb-20 w-full">
+    <section className="myListPage py-4 lg:py-6 pb-20 w-full">
       <div className="container flex flex-col md:flex-row gap-5">
         <div className="col1 w-full md:w-[20%] hidden lg:block">
           <AccountSidebar />

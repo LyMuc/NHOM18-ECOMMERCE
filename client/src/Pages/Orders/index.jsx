@@ -32,7 +32,7 @@ const Orders = () => {
   }, [page])
 
   return (
-    <section className="py-5 lg:py-10 w-full">
+    <section className="ordersPage py-5 lg:py-10 w-full">
       <div className="container flex flex-col lg:flex-row gap-5">
         <div className="col1 w-[20%] hidden lg:block">
           <AccountSidebar />

@@ -57,7 +57,7 @@ const CartPage = () => {
 
 
   return (
-    <section className="section py-4 lg:py-8 pb-10">
+    <section className="cartPage section py-4 lg:py-8 pb-10">
       <div className="container w-[80%] max-w-[80%] flex gap-5 flex-col lg:flex-row">
         <div className="leftPart w-full lg:w-[70%]">
           <div className="shadow-md rounded-md bg-white">
