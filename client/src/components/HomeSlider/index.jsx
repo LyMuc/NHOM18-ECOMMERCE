@@ -1,53 +1,49 @@
-import React from "react";
-import { Autoplay, Navigation } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import React, { useContext } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
 
-import 'swiper/css';
-import 'swiper/css/navigation';
+import { Navigation, Autoplay } from "swiper/modules";
+import { MyContext } from "../../App";
 
-const HomeSlider = () => {
-    return(
-        <div className="homeSlider py-4">
-            <div className="container">
-                <Swiper 
-                    spaceBetween={10} 
-                    autoplay={{
-                        delay: 2500,
-                        disableOnInteraction: false,
-                    }} 
-                    navigation={true} 
-                    modules={[Autoplay, Navigation]} 
-                    className="sliderHome"
-                >
-                    <SwiperSlide>
-                        <div className="item rounded-[20px] overflow-hidden">
-                             <img src="https://serviceapi.spicezgold.com/download/1761362043357_34292.jpg" alt="Banner slide" className="w-full"></img>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <div className="item rounded-[20px] overflow-hidden">
-                            <img src="https://serviceapi.spicezgold.com/download/1761362025223_34295.jpg" alt="Banner slide" className="w-full"></img>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <div className="item rounded-[20px] overflow-hidden">
-                            <img src="https://serviceapi.spicezgold.com/download/1748955932914_NewProject(1).jpg" alt="Banner slide" className="w-full"></img>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <div className="item rounded-[20px] overflow-hidden">
-                            <img src="https://serviceapi.spicezgold.com/download/1751685130717_NewProject(8).jpg" alt="Banner slide" className="w-full"></img>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <div className="item rounded-[20px] overflow-hidden">
-                            <img src="https://serviceapi.spicezgold.com/download/1759938751802_30744.jpg" alt="Banner slide" className="w-full"></img>
-                        </div>
-                    </SwiperSlide>
-                </Swiper>
-            </div>
-        </div>
-    )
-}
+const HomeSlider = (props) => {
+
+  const context  = useContext(MyContext);
+
+  return (
+    <div className="homeSlider pb-3 pt-3 lg:pb-5 lg:pt-5 relative z-[99]">
+      <div className="container">
+        <Swiper
+          loop={true}
+          spaceBetween={10}
+          navigation={context?.windowWidth < 992 ? false : true}
+          modules={[Navigation, Autoplay]}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          className="sliderHome"
+        >
+          {
+            props?.data?.length !== 0 && props?.data?.slice()?.reverse()?.map((item, index) => {
+              return (
+                <SwiperSlide key={index}>
+                  <div className="item rounded-[10px] overflow-hidden">
+                    <img
+                      src={item?.images[0]}
+                      alt="Banner slide"
+                      className="w-full h-[200px] sm:h-[260px] md:h-[340px] lg:h-[420px] object-cover block"
+                    />
+                  </div>
+                </SwiperSlide>
+              )
+            })
+          }
+
+        </Swiper>
+      </div>
+    </div>
+  );
+};
 
 export default HomeSlider;

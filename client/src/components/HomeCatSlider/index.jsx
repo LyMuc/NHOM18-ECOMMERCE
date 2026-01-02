@@ -1,118 +1,72 @@
-import React from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import { Navigation } from 'swiper/modules';
-import {Link} from "react-router-dom";
+import React, { useContext } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import 'swiper/css/free-mode';
 
-const HomeCatSlider = () => {
-    return(
-        <>
-            <div className="homeCatSlider pt-4 py-8">
-                <div className="container">
-                        <Swiper
-                            slidesPerView={8}
-                            spaceBetween={10}
-                            navigation={true}
-                            modules={[Navigation]}
-                            className="mySwiper"
-                        >
-                            <SwiperSlide>
-                                <Link to={"/"}>
-                                    <div className="item py-7 px-3 flex items-center justify-center rounded-sm text-center flex-col bg-white">
-                                        <img src="https://serviceapi.spicezgold.com/download/1755610847575_file_1734525204708_fash.png" alt="Category img" className="w-[60px]"></img>
-                                        <h3 className="mt-3 font-[500] text-[15px] transition-all"> Fashion </h3>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
+import { Navigation,FreeMode } from "swiper/modules";
+import { Link } from "react-router-dom";
+import { MyContext } from "../../App";
 
-                            <SwiperSlide>
-                                <Link to={"/"}>
-                                    <div className="item py-7 px-3 flex items-center justify-center rounded-sm text-center flex-col bg-white">
-                                        <img src="https://serviceapi.spicezgold.com/download/1755610847575_file_1734525204708_fash.png" alt="Category img" className="w-[60px]"></img>
-                                        <h3 className="mt-3 font-[500] text-[15px] transition-all"> Fashion </h3>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
+const HomeCatSlider = (props) => {
 
-                            <SwiperSlide>
-                                <Link to={"/"}>
-                                    <div className="item py-7 px-3 flex items-center justify-center rounded-sm text-center flex-col bg-white">
-                                        <img src="https://serviceapi.spicezgold.com/download/1755610847575_file_1734525204708_fash.png" alt="Category img" className="w-[60px]"></img>
-                                        <h3 className="mt-3 font-[500] text-[15px] transition-all"> Fashion </h3>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
+  const context = useContext(MyContext);
 
-                            <SwiperSlide>
-                                <Link to={"/"}>
-                                    <div className="item py-7 px-3 flex items-center justify-center rounded-sm text-center flex-col bg-white">
-                                        <img src="https://serviceapi.spicezgold.com/download/1755610847575_file_1734525204708_fash.png" alt="Category img" className="w-[60px]"></img>
-                                        <h3 className="mt-3 font-[500] text-[15px] transition-all"> Fashion </h3>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
+  return (
+    <div className="homeCatSlider pt-0 lg:pt-4 py-4 lg:py-8">
+      <div className="container">
+        <Swiper
+          slidesPerView={8}
+          spaceBetween={10}
+          navigation={context?.windowWidth < 992 ? false : true}
+          modules={[Navigation, FreeMode]}
+          freeMode={true}
+          breakpoints={{
+            300: {
+              slidesPerView: 4,
+              spaceBetween: 5,
+            },
+            550: {
+              slidesPerView: 5,
+              spaceBetween: 5,
+            },
+            900: {
+              slidesPerView: 5,
+              spaceBetween: 5,
+            },
+            1100: {
+              slidesPerView: 8,
+              spaceBetween: 5,
+            },
+          }}
+          className="mySwiper"
+        >
+          {
+            props?.data?.map((cat, index) => {
+              return (
+                <SwiperSlide>
+                  <Link to="/">
+                    <div className="item w-[150px] h-[150px] lg:w-[170px] lg:h-[170px] bg-white rounbded-sm text-center flex items-center justify-center flex-col shadow-sm">
+                      <div className="w-[60px] h-[60px] lg:w-[80px] lg:h-[80px] flex items-center justify-center overflow-hidden">
+                        <img
+                          src={cat?.images[0]}
+                          className="w-full h-full object-contain transition-all"
+                          alt={cat?.name}
+                        />
+                      </div>
+                      <h3 className="text-[12px] lg:text-[15px] font-[500] mt-3">{cat?.name}</h3>
+                    </div>
+                  </Link>
+                </SwiperSlide>
+              )
+            })
+          }
 
-                            <SwiperSlide>
-                                <Link to={"/"}>
-                                    <div className="item py-7 px-3 flex items-center justify-center rounded-sm text-center flex-col bg-white">
-                                        <img src="https://serviceapi.spicezgold.com/download/1755610847575_file_1734525204708_fash.png" alt="Category img" className="w-[60px]"></img>
-                                        <h3 className="mt-3 font-[500] text-[15px] transition-all"> Fashion </h3>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
 
-                            <SwiperSlide>
-                                <Link to={"/"}>
-                                    <div className="item py-7 px-3 flex items-center justify-center rounded-sm text-center flex-col bg-white">
-                                        <img src="https://serviceapi.spicezgold.com/download/1755610847575_file_1734525204708_fash.png" alt="Category img" className="w-[60px]"></img>
-                                        <h3 className="mt-3 font-[500] text-[15px] transition-all"> Fashion </h3>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
-
-                            <SwiperSlide>
-                                <Link to={"/"}>
-                                    <div className="item py-7 px-3 flex items-center justify-center rounded-sm text-center flex-col bg-white">
-                                        <img src="https://serviceapi.spicezgold.com/download/1755610847575_file_1734525204708_fash.png" alt="Category img" className="w-[60px]"></img>
-                                        <h3 className="mt-3 font-[500] text-[15px] transition-all"> Fashion </h3>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
-
-                            <SwiperSlide>
-                                <Link to={"/"}>
-                                    <div className="item py-7 px-3 flex items-center justify-center rounded-sm text-center flex-col bg-white">
-                                        <img src="https://serviceapi.spicezgold.com/download/1755610847575_file_1734525204708_fash.png" alt="Category img" className="w-[60px]"></img>
-                                        <h3 className="mt-3 font-[500] text-[15px] transition-all"> Fashion </h3>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
-
-                            <SwiperSlide>
-                                <Link to={"/"}>
-                                    <div className="item py-7 px-3 flex items-center justify-center rounded-sm text-center flex-col bg-white">
-                                        <img src="https://serviceapi.spicezgold.com/download/1755610847575_file_1734525204708_fash.png" alt="Category img" className="w-[60px]"></img>
-                                        <h3 className="mt-3 font-[500] text-[15px] transition-all"> Fashion </h3>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
-
-                            <SwiperSlide>
-                                <Link to={"/"}>
-                                    <div className="item py-7 px-3 flex items-center justify-center rounded-sm text-center flex-col bg-white">
-                                        <img src="https://serviceapi.spicezgold.com/download/1755610847575_file_1734525204708_fash.png" alt="Category img" className="w-[60px]"></img>
-                                        <h3 className="mt-3 font-[500] text-[15px] transition-all"> Fashion </h3>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
-
-                            
-                    </Swiper>
-                </div>
-            </div>
-        </>
-    )
-}
+        </Swiper>
+      </div>
+    </div>
+  );
+};
 
 export default HomeCatSlider;
