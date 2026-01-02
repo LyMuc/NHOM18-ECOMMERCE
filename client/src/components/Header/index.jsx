@@ -118,7 +118,7 @@ const Header = () => {
                 <ul className="flex items-center gap-3 w-full justify-between lg:w-[200px]">
                   <li className="list-none">
                     <Link
-                      to="/help-center"
+                      to="/contact_us"
                       className="text-[11px] lg:text-[13px] link font-[500] transition"
                     >
                       Help Center{" "}

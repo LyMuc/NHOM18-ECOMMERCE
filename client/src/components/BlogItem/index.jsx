@@ -10,11 +10,11 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 const BlogItem = (props) => {
   return (
     <div className="blogItem group">
-      <div className="imgWrapper w-full overflow-hidden rounded-md cursor-pointer relative">
+      <div className="imgWrapper w-full aspect-[16/10] overflow-hidden rounded-md cursor-pointer relative">
         <LazyLoadImage
           alt={"image"}
           effect="blur"
-          className="w-full transition-all group-hover:scale-105  group-hover:rotate-1"
+          className="block w-full h-full object-cover object-center transition-all group-hover:scale-105 group-hover:rotate-1"
           src={props?.item?.images[0]}
         />
 

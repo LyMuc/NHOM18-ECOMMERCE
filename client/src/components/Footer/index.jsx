@@ -158,7 +158,7 @@ const Footer = () => {
                     </Link>
                   </li>
                   <li className="list-none text-[14px] w-full mb-2">
-                    <Link to="/" className="link">
+                    <Link to="/about_us" className="link">
                       About us
                     </Link>
                   </li>
