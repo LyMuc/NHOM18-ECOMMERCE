@@ -219,11 +219,6 @@ const Register = () => {
             <p className="text-center">Already have an account? <Link className="link text-[14px] font-[600] text-[#ff5252]" to="/login"> Login</Link></p>
 
 
-            <p className="text-center font-[500]">Or continue with social account</p>
-
-            <Button className="flex gap-3 w-full !bg-[#f1f1f1] btn-lg !text-black"
-              onClick={authWithGoogle}>
-              <FcGoogle className="text-[20px] font-[600]" /> Sign Up with Google</Button>
 
           </form>
         </div>
