@@ -10,7 +10,8 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,    // your SMTP password
   },tls: {
     rejectUnauthorized: false 
-  }
+  },
+  family: 4,
 });
 
 // Function to send email
