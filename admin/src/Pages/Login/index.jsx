@@ -99,7 +99,7 @@ const Login = () => {
     }
 
 
-    postData("/api/users/login", formFields, { withCredentials: true }).then((res) => {
+    postData("/api/users/admin/login", formFields, { withCredentials: true }).then((res) => {
 
       if (res?.error !== true) {
         setIsLoading(false);

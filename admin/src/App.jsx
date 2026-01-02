@@ -534,7 +534,7 @@ function App() {
 
   // Function lấy thông tin user
   const getUserDetails = () => {
-    fetchDataFromApi(`/api/users/user-details`).then((res) => {
+    fetchDataFromApi(`/api/users/admin/user-details`).then((res) => {
       if (res?.error === false) {
         setUserData(res.data);
       } else {
@@ -552,12 +552,11 @@ function App() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetchDataFromApi("/api/users/check-auth");
+        const res = await fetchDataFromApi("/api/users/admin/check-auth");
         
         if (res?.error === false) {
           console.log("Da dang nhap");
           setIsLogin(true);
-          getUserDetails(); 
         } else {
           console.log("Chua dang nhap");
           setIsLogin(false);
@@ -572,6 +571,13 @@ function App() {
 
     checkAuth();
   }, [])
+
+  // Khi đã login (vd: vừa login xong không reload), luôn lấy user details để có role
+  useEffect(() => {
+    if (isLogin === true) {
+      getUserDetails();
+    }
+  }, [isLogin])
 
 
   useEffect(() => {

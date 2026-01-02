@@ -216,6 +216,87 @@ export async function loginUserController(request, response) {
     }
 }
 
+export async function adminLoginUserController(request, response) {
+    try {
+        const { email, password } = request.body;
+
+        const user = await UserModel.findOne({ email: email });
+
+        if (!user) {
+            return response.status(400).json({
+                message: "User not registered",
+                error: true,
+                success: false
+            })
+        }
+
+        if (user.role !== 'ADMIN') {
+            return response.status(403).json({
+                message: "Admin access required",
+                error: true,
+                success: false
+            })
+        }
+
+        if (user.status !== "Active") {
+            return response.status(400).json({
+                message: "Contact to admin",
+                error: true,
+                success: false
+            })
+        }
+
+        if (user.verify_email !== true) {
+            return response.status(400).json({
+                message: "Your Email is not verify yet please verify your email first",
+                error: true,
+                success: false
+            })
+        }
+
+        const checkPassword = await bcryptjs.compare(password, user.password);
+
+        if (!checkPassword) {
+            return response.status(400).json({
+                message: "Check your password",
+                error: true,
+                success: false
+            })
+        }
+
+        const accesstoken = await generatedAccessToken(user._id);
+        const refreshToken = await genertedRefreshToken(user._id);
+
+        await UserModel.findByIdAndUpdate(user?._id, {
+            last_login_date: new Date()
+        })
+
+        const cookiesOption = {
+            httpOnly: true,
+            secure: false,
+        }
+
+        response.cookie('accessToken', accesstoken, cookiesOption)
+        response.cookie('refreshToken', refreshToken, cookiesOption)
+
+        return response.json({
+            message: "Login successfully",
+            error: false,
+            success: true,
+            data: {
+                accesstoken,
+                refreshToken
+            }
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
 export async function authWithGoogle(request, response) {
     const { name, email, password, avatar, mobile, role } = request.body;
 
@@ -982,6 +1063,15 @@ export async function getAllUsers(request, response) {
 
 
 export async function deleteUser(request, response) {
+    // Prevent deleting yourself (even if you're admin)
+    if (String(request.params.id) === String(request.userId)) {
+        return response.status(400).json({
+            message: "You cannot delete your own account",
+            error: true,
+            success: false
+        })
+    }
+
     const user = await UserModel.findById(request.params.id);
 
     if (!user) {
@@ -1011,6 +1101,62 @@ export async function deleteUser(request, response) {
 }
 
 
+// Admin: update user's role
+// PUT /api/users/admin/update-role/:id
+export async function updateUserRole(request, response) {
+    try {
+        const targetUserId = request.params.id;
+        const { role } = request.body;
+
+        const allowedRoles = ['ADMIN', 'USER'];
+        if (!role || !allowedRoles.includes(role)) {
+            return response.status(400).json({
+                message: 'Invalid role',
+                error: true,
+                success: false
+            })
+        }
+
+        // Prevent locking the current admin out
+        if (String(targetUserId) === String(request.userId) && role !== 'ADMIN') {
+            return response.status(400).json({
+                message: 'You cannot remove your own admin role',
+                error: true,
+                success: false
+            })
+        }
+
+        const user = await UserModel.findById(targetUserId);
+        if (!user) {
+            return response.status(404).json({
+                message: 'User not found',
+                error: true,
+                success: false
+            })
+        }
+
+        user.role = role;
+        await user.save();
+
+        return response.status(200).json({
+            message: 'User role updated',
+            error: false,
+            success: true,
+            data: {
+                _id: user._id,
+                role: user.role
+            }
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+
 //delete multiple products
 export async function deleteMultiple(request, response) {
     const { ids } = request.body;
@@ -1019,6 +1165,15 @@ export async function deleteMultiple(request, response) {
         return response.status(400).json({ error: true, success: false, message: 'Invalid input' });
     }
 
+
+    // Prevent deleting yourself
+    if (ids.some((id) => String(id) === String(request.userId))) {
+        return response.status(400).json({
+            message: "You cannot delete your own account",
+            error: true,
+            success: false
+        })
+    }
 
     try {
         await UserModel.deleteMany({ _id: { $in: ids } });

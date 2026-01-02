@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Button } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import { IoMdAdd } from "react-icons/io";
 
 import Table from "@mui/material/Table";
@@ -16,7 +17,7 @@ import { MyContext } from '../../App';
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import { MdLocalPhone } from "react-icons/md";
 import { SlCalender } from "react-icons/sl";
-import { deleteData, deleteMultipleData, fetchDataFromApi } from '../../utils/api';
+import { deleteData, deleteMultipleData, fetchDataFromApi, editData } from '../../utils/api';
 import { FaCheckDouble } from "react-icons/fa6";
 
 import CircularProgress from '@mui/material/CircularProgress';
@@ -35,6 +36,11 @@ const columns = [
         id: "verifyemail",
         label: "Email Verify",
         minWidth: 130,
+    },
+    {
+        id: "role",
+        label: "ROLE",
+        minWidth: 110,
     },
     {
         id: "createdDate",
@@ -57,6 +63,7 @@ export const Users = () => {
     const [searchQuery, setSearchQuery] = useState("");
 
     const [sortedIds, setSortedIds] = useState([]);
+    const [updatingRoleId, setUpdatingRoleId] = useState(null);
 
     const context = useContext(MyContext);
 
@@ -181,6 +188,11 @@ export const Users = () => {
                 return;
             }
 
+            if (sortedIds?.some((id) => String(id) === String(context?.userData?._id))) {
+                context.alertBox('error', "You can't delete your own account");
+                return;
+            }
+
 
             try {
                 deleteMultipleData(`/api/users/deleteMultiple`, {
@@ -205,11 +217,39 @@ export const Users = () => {
 
     const deleteUser = (id) => {
         if (context?.userData?.role === "ADMIN") {
+            if (String(id) === String(context?.userData?._id)) {
+                context.alertBox('error', "You can't delete your own account");
+                return;
+            }
             deleteData(`/api/users/deleteUser/${id}`).then((res) => {
                 getUsers(page, rowsPerPage);
             })
         } else {
             context.alertBox("error", "Only admin can delete data");
+        }
+    }
+
+    const handleChangeRole = async (userId, nextRole) => {
+        if (context?.userData?.role !== "ADMIN") {
+            context.alertBox("error", "Only admin can change role");
+            return;
+        }
+
+        setUpdatingRoleId(userId);
+        try {
+            const res = await editData(`/api/users/admin/update-role/${userId}`, { role: nextRole });
+            const payload = res?.data || res?.response?.data;
+
+            if (payload?.error === false) {
+                context.alertBox("success", "Role updated");
+                getUsers(page, rowsPerPage);
+            } else {
+                context.alertBox("error", payload?.message || "Update role failed");
+            }
+        } catch (e) {
+            context.alertBox("error", e?.response?.data?.message || "Update role failed");
+        } finally {
+            setUpdatingRoleId(null);
         }
     }
 
@@ -274,7 +314,23 @@ export const Users = () => {
                                                     />
                                                 </TableCell>
                                                 <TableCell style={{ minWidth: columns.minWidth }}>
-                                                    <div className="flex items-center gap-4 w-[300px]">
+                                                    <Tooltip
+                                                        arrow
+                                                        placement="top-start"
+                                                        title={
+                                                            <div className="flex flex-col gap-1">
+                                                                <div className="flex items-center gap-2">
+                                                                    <MdOutlineMarkEmailRead size={15} />
+                                                                    <span>{user?.email || '—'}</span>
+                                                                </div>
+                                                                <div className="flex items-center gap-2">
+                                                                    <MdLocalPhone size={15} />
+                                                                    <span>{user?.mobile === null ? 'NONE' : user?.mobile}</span>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    >
+                                                        <div className="flex items-center gap-4 w-[300px]">
                                                         <div class="img w-[45px] h-[45px] rounded-md overflow-hidden group">
 
                                                                 <img
@@ -295,6 +351,7 @@ export const Users = () => {
                                                         </div>
 
                                                     </div>
+                                                    </Tooltip>
                                                 </TableCell>
 
                                                 <TableCell style={{ minWidth: columns.minWidth }}>
@@ -325,11 +382,31 @@ export const Users = () => {
                                                 </TableCell>
 
                                                 <TableCell style={{ minWidth: columns.minWidth }}>
+                                                    <select
+                                                        className="border border-gray-300 rounded-md px-2 py-1 text-[12px]"
+                                                        value={user?.role || "USER"}
+                                                        disabled={updatingRoleId === user?._id}
+                                                        onChange={(e) => handleChangeRole(user?._id, e.target.value)}
+                                                    >
+                                                        <option value="USER">USER</option>
+                                                        <option value="ADMIN">ADMIN</option>
+                                                    </select>
+                                                </TableCell>
+
+                                                <TableCell style={{ minWidth: columns.minWidth }}>
                                                     <span className="flex items-center gap-2"> <SlCalender />  {user?.createdAt?.split("T")[0]}</span>
                                                 </TableCell>
 
                                                 <TableCell style={{ minWidth: columns.minWidth }}>
-                                                    <Button onClick={() => deleteUser(user?._id)} variant="outlined" color="error" size="small">Delete</Button>
+                                                    <Button
+                                                        onClick={() => deleteUser(user?._id)}
+                                                        variant="outlined"
+                                                        color="error"
+                                                        size="small"
+                                                        disabled={String(user?._id) === String(context?.userData?._id)}
+                                                    >
+                                                        Delete
+                                                    </Button>
                                                 </TableCell>
 
                                             </TableRow>
