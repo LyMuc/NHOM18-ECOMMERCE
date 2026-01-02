@@ -1,9 +1,12 @@
 import jwt from 'jsonwebtoken';
+import UserModel from '../models/user.model.js';
 
 export const auth = async (request, response, next) => {
     try {
-        // Lấy token từ cookie
-        const token = request.cookies.accessToken || request.cookies.refreshToken;
+        // Lấy token từ cookie (ưu tiên access token)
+        const accessToken = request.cookies.accessToken;
+        const refreshToken = request.cookies.refreshToken;
+        const token = accessToken || refreshToken;
 
         console.log('=== AUTH MIDDLEWARE ===');
         console.log('Cookies:', request.cookies);
@@ -17,8 +20,12 @@ export const auth = async (request, response, next) => {
             })
         }
 
-        // Verify token
-        const decode = await jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN);
+        // Verify token (đúng secret theo loại token)
+        const secret = accessToken
+            ? process.env.SECRET_KEY_ACCESS_TOKEN
+            : process.env.SECRET_KEY_REFRESH_TOKEN;
+
+        const decode = await jwt.verify(token, secret);
 
         console.log('Token decoded:', decode);
 
@@ -52,6 +59,46 @@ export const auth = async (request, response, next) => {
                 success: false
             });
         }
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+export const requireAdmin = async (request, response, next) => {
+    try {
+        const userId = request.userId;
+
+        if (!userId) {
+            return response.status(401).json({
+                message: "Please login",
+                error: true,
+                success: false
+            })
+        }
+
+        const user = await UserModel.findById(userId).select('role');
+
+        if (!user) {
+            return response.status(404).json({
+                message: "User not found",
+                error: true,
+                success: false
+            })
+        }
+
+        if (user.role !== 'ADMIN') {
+            return response.status(403).json({
+                message: "Admin access required",
+                error: true,
+                success: false
+            })
+        }
+
+        next();
+    } catch (error) {
         return response.status(500).json({
             message: error.message || error,
             error: true,
