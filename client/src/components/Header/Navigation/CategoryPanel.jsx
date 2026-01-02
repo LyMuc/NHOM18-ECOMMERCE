@@ -5,12 +5,13 @@ import { IoCloseSharp } from "react-icons/io5";
 import { CategoryCollapse } from "../../CategoryCollapse";
 import { Button } from "@mui/material";
 import { MyContext } from "../../../App";
-import { Link } from "react-router-dom";
-import { fetchDataFromApi } from "../../../utils/api";
+import { Link, useNavigate } from "react-router-dom";
+import { postData } from "../../../utils/api";
 
 const CategoryPanel = (props) => {
 
   const context = useContext(MyContext);
+  const navigate = useNavigate();
 
   const toggleDrawer = (newOpen) => () => {
     props.setIsOpenCatPanel(newOpen);
@@ -53,7 +54,7 @@ const CategoryPanel = (props) => {
         <div className="p-3 block" onClick={() => {
           props.setIsOpenCatPanel(false);
           props.propsSetIsOpenCatPanel(false)
-          fetchDataFromApi(`/api/user/logout?token=${localStorage.getItem('accessToken')}`, { withCredentials: true }).then((res) => {
+          postData(`/api/users/logout`, {}).then((res) => {
             if (res?.error === false) {
               context.setIsLogin(false);
               localStorage.removeItem("accessToken");
@@ -61,10 +62,8 @@ const CategoryPanel = (props) => {
               context.setUserData(null);
               context?.setCartData([]);
               context?.setMyListData([]);
-              history("/");
+              navigate("/");
             }
-
-
           })
         }}>
           <Button className="btn-org w-full">Logout</Button>
