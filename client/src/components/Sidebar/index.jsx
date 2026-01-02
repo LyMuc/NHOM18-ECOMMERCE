@@ -163,8 +163,8 @@ export const Sidebar = (props) => {
 
 
   return (
-    <aside className="sidebar py-3  lg:py-5 static lg:sticky top-[130px] z-[50] pr-0 lg:pr-5">
-      <div className=" max-h-[60vh]  lg:overflow-visible overflow-auto  w-full">
+    <aside className="sidebar py-3  lg:py-5 static lg:sticky top-[130px] z-[50] pr-0 lg:pr-5 pb-8">
+      <div className=" max-h-[calc(100vh-180px)]  lg:overflow-auto overflow-auto  w-full pb-6">
         <div className="box">
           <h3 className="w-full mb-3 text-[16px] font-[600] flex items-center pr-5">
             Shop by Category
@@ -316,9 +316,9 @@ export const Sidebar = (props) => {
 
 
       </div>
-      <br />
-      <Button className="btn-org w-full !flex lg:!hidden" onClick={() => context?.setOpenFilter(false)}><MdOutlineFilterAlt size={20} /> Filers</Button>
-
+      <div className="mt-4 lg:mt-6">
+        <Button className="btn-org w-full !flex lg:!hidden" onClick={() => context?.setOpenFilter(false)}><MdOutlineFilterAlt size={20} /> Filers</Button>
+      </div>
 
     </aside>
   );
