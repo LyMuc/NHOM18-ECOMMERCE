@@ -101,8 +101,10 @@ const Login = () => {
         // Set trạng thái login
         context.setIsLogin(true);
 
-        // Fetch user profile so Header updates immediately
+        // Fetch user data, cart and wishlist
         context?.getUserDetails?.();
+        context?.getCartItems?.();
+        context?.getMyListData?.();
 
         // Chuyển về trang chủ
         history("/")
@@ -139,8 +141,11 @@ const Login = () => {
 
             context.setIsLogin(true);
 
-            // Fetch user profile so Header updates immediately
+            // Fetch user data, cart and wishlist
             context?.getUserDetails?.();
+            context?.getCartItems?.();
+            context?.getMyListData?.();
+            
             history("/")
           } else {
             context.alertBox("error", res?.message);
